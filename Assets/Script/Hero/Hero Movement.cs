@@ -16,9 +16,13 @@ public class HeroMovement : MonoBehaviour
 
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float sprintSpeed = 5f;
+
+    private float currSpeed;
     public bool isGrounded;
     public bool canJump;
 
+    private float randomActionCooldown = 10f;
     public bool Randomized;
 
     [Header("Jump Settings")]
@@ -35,6 +39,7 @@ public class HeroMovement : MonoBehaviour
 
     void Start()
     {
+        currSpeed = moveSpeed;
         SetRandomState();
     }
 
@@ -45,9 +50,41 @@ public class HeroMovement : MonoBehaviour
         if (isGrounded)
         {
             PerformRaycasts();
+
+            randomActionCooldown -= Time.deltaTime;
+            if (randomActionCooldown <= 0f)
+            {
+                RandomizedAction();
+
+                randomActionCooldown = 10f;
+            }
+
             float direction = CurrentState == MovementState.MovingRight ? 1f : -1f;
-            rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(direction * currSpeed, rb.linearVelocity.y);
         }
+    }
+
+    public void RandomizedAction()
+    {
+        bool shouldJump = Random.Range(0, 2) == 0;
+
+        if (shouldJump)
+        {
+            Jump();
+        }
+        else
+        {
+            StartCoroutine(OneSecondAction());
+        }
+    }
+
+    private IEnumerator OneSecondAction()
+    {
+        currSpeed = sprintSpeed;
+
+        yield return new WaitForSeconds(1f);
+
+        currSpeed = moveSpeed;
     }
 
     private void PerformRaycasts()
