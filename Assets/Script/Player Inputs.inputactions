@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "Player Inputs",
+    "maps": [
+        {
+            "name": "Parry",
+            "id": "a721ee61-7ed5-4570-b9ec-29b302b175d7",
+            "actions": [
+                {
+                    "name": "Parry",
+                    "type": "Button",
+                    "id": "4e239bde-37da-4cdb-8945-c7c729c59f83",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6883d18e-3b78-4f1d-b07e-c006958610be",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Parry",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
