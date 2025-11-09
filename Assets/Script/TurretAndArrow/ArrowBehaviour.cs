@@ -59,7 +59,7 @@ public class ArrowBehaviour : MonoBehaviour
                 // Hero takes damage
                 Destroy(gameObject);
             }
-            else if (collision.collider.CompareTag("Wall"))
+            else if (collision.collider.CompareTag("Wall") || collision.collider.CompareTag("Ground"))
             {
                 Destroy(gameObject);
             }

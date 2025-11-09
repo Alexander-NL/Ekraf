@@ -22,6 +22,8 @@ public class HeroMovement : MonoBehaviour
     public bool isGrounded;
     public bool canJump;
 
+    public bool stunned;
+
     private float randomActionCooldown = 10f;
     public bool Randomized;
 
@@ -45,7 +47,7 @@ public class HeroMovement : MonoBehaviour
 
     void Update()
     {
-        if (CurrentState == MovementState.Idle) return;
+        if (CurrentState == MovementState.Idle || stunned) return;
 
         if (isGrounded)
         {
@@ -126,9 +128,14 @@ public class HeroMovement : MonoBehaviour
         CurrentState = Random.Range(0, 2) == 0 ? MovementState.MovingLeft : MovementState.MovingRight;
     }
 
-    private void Jump()
+    public void Jump()
     {
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.75f, jumpForce);
+    }
+
+    public void ReverseJump()
+    {
+        rb.linearVelocity = new Vector2(-rb.linearVelocity.x * 1.5f, jumpForce);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -141,6 +148,13 @@ public class HeroMovement : MonoBehaviour
         {
             StartCoroutine(ChangeDirection());
         }
+    }
+
+    public IEnumerator HeroGotStunned()
+    {
+        stunned = true;
+        yield return new WaitForSeconds(1);
+        stunned = false;
     }
 
     IEnumerator ChangeDirection()

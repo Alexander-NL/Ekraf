@@ -32,14 +32,25 @@ public class PlayerAttackHero : MonoBehaviour
 
         Collider2D hit = Physics2D.OverlapPoint(mouseWorldPosition);
 
+
+        //Check for Hero
         if (hit != null && hit is CapsuleCollider2D && !canSlap)
         {
             HeroSlapDetect HSD = hit.gameObject.GetComponent<HeroSlapDetect>();
             HSD.CalculateSlapLocation(mouseWorldPosition);
 
             StartCoroutine(cooldown());
-
             StartCoroutine(ImpactFrames());
+            return;
+        }
+
+        //Check for Arrow
+        if (hit != null && hit.tag == "Arrow" && !canSlap)
+        {
+            ArrowBehaviour AB = hit.GetComponent<ArrowBehaviour>();
+            AB.Parry();
+            StartCoroutine(ImpactFrames());
+            return;
         }
     }
 
