@@ -1,9 +1,15 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerAttackHero : MonoBehaviour
 {
+    [Header("Input Action Reference")]
     public InputActionReference parryAction;
+
+    [Header("Slap Related")]
+    public float slapCooldown = 1.5f;
+    public bool canSlap;
 
     private Vector2 mouseWorldPosition;
 
@@ -19,11 +25,6 @@ public class PlayerAttackHero : MonoBehaviour
         parryAction.action.Disable();
     }
 
-    void Start()
-    {
-        
-    }
-
     private void GetMouseLocation(InputAction.CallbackContext context)
     {
         Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
@@ -31,14 +32,28 @@ public class PlayerAttackHero : MonoBehaviour
 
         Collider2D hit = Physics2D.OverlapPoint(mouseWorldPosition);
 
-        if (hit != null && hit is CapsuleCollider2D)
+        if (hit != null && hit is CapsuleCollider2D && !canSlap)
         {
-            Debug.Log($"Hit capsule: {hit.gameObject.name}");
+            HeroSlapDetect HSD = hit.gameObject.GetComponent<HeroSlapDetect>();
+            HSD.CalculateSlapLocation(mouseWorldPosition);
+
+            StartCoroutine(cooldown());
+
+            StartCoroutine(ImpactFrames());
         }
     }
 
-    void Update()
+    IEnumerator ImpactFrames()
     {
-        
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.5f);
+        Time.timeScale = 1f;
+    }
+
+    IEnumerator cooldown()
+    {
+        canSlap = true;
+        yield return new WaitForSecondsRealtime(slapCooldown);
+        canSlap = false;
     }
 }

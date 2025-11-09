@@ -112,13 +112,11 @@ public class HeroMovement : MonoBehaviour
         {
             canJump = true;
             Jump();
-            Debug.Log("Can jump");
         }
 
         if (aboveHit.collider != null && aboveHit.collider.gameObject.tag == "Wall")
         {
             canJump = false;
-            Debug.Log("Cannot jump");
         }
     }
 
@@ -126,13 +124,11 @@ public class HeroMovement : MonoBehaviour
     {
         if (!Randomized) return;
         CurrentState = Random.Range(0, 2) == 0 ? MovementState.MovingLeft : MovementState.MovingRight;
-        Debug.Log($"Now {CurrentState}");
     }
 
     private void Jump()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-        Debug.Log("Jumped!");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
