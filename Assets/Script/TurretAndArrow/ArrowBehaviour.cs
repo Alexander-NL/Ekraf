@@ -55,8 +55,6 @@ public class ArrowBehaviour : MonoBehaviour
         {
             if (collision.collider.CompareTag("Hero"))
             {
-                Debug.Log("Hero get hit");
-                // Hero takes damage
                 Destroy(gameObject);
             }
             else if (collision.collider.CompareTag("Wall") || collision.collider.CompareTag("Ground"))
@@ -68,12 +66,27 @@ public class ArrowBehaviour : MonoBehaviour
         {
             if (collision.collider.CompareTag("Turret"))
             {
-                // Damage turret
                 var turretBehaviour = collision.collider.GetComponent<TurretBehaviour>();
                 if (turretBehaviour != null)
                     turretBehaviour.ReceiveHit(damage);
 
                 Destroy(gameObject);
+            }
+            else if (collision.collider.CompareTag("Boss"))
+            {
+                var smallTurret = collision.collider.GetComponent<SmallTurret>();
+                var bossTurret = collision.collider.GetComponent<BossTurret>();
+
+                if(smallTurret != null)
+                {
+                    smallTurret.ReceiveHit(damage);
+                    Destroy(gameObject);
+                }
+                else if(bossTurret != null)
+                {
+                    bossTurret.ReceiveHit(damage);
+                    Destroy(gameObject);
+                }
             }
             else
             {

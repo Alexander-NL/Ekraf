@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +11,7 @@ public class PlayerAttackHero : MonoBehaviour
     [Header("Slap Related")]
     public float slapCooldown = 1.5f;
     public bool canSlap;
+    public CinemachineImpulseSource impulseSource;
 
     private Vector2 mouseWorldPosition;
 
@@ -27,6 +29,7 @@ public class PlayerAttackHero : MonoBehaviour
 
     private void GetMouseLocation(InputAction.CallbackContext context)
     {
+        Debug.Log("Clicking");
         Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
 
@@ -38,6 +41,7 @@ public class PlayerAttackHero : MonoBehaviour
         {
             HeroSlapDetect HSD = hit.gameObject.GetComponent<HeroSlapDetect>();
             HSD.CalculateSlapLocation(mouseWorldPosition);
+            impulseSource.GenerateImpulse();
 
             StartCoroutine(cooldown());
             StartCoroutine(ImpactFrames());
@@ -48,6 +52,8 @@ public class PlayerAttackHero : MonoBehaviour
         if (hit != null && hit.tag == "Arrow" && !canSlap)
         {
             ArrowBehaviour AB = hit.GetComponent<ArrowBehaviour>();
+
+            impulseSource.GenerateImpulse();
             AB.Parry();
             StartCoroutine(ImpactFrames());
             return;

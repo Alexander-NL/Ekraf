@@ -12,9 +12,10 @@ public class HeroMovement : MonoBehaviour
 {
     [Header("Reference")]
     public Rigidbody2D rb;
-    public MovementState CurrentState;
+    public HeroRespawn heroRespawn;
 
     [Header("Movement Settings")]
+    public MovementState CurrentState;
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float sprintSpeed = 5f;
 
@@ -47,7 +48,7 @@ public class HeroMovement : MonoBehaviour
 
     void Update()
     {
-        if (CurrentState == MovementState.Idle || stunned) return;
+        if (CurrentState == MovementState.Idle || stunned || heroRespawn.Dead) return;
 
         if (isGrounded)
         {
@@ -143,8 +144,9 @@ public class HeroMovement : MonoBehaviour
         if (collision.gameObject.tag == "Ground")
         {
             isGrounded = true;
+            return;
         }
-        if (collision.gameObject.tag == "Wall" && !canJump)
+        if (collision.gameObject.tag == "Wall" && !canJump && isGrounded)
         {
             StartCoroutine(ChangeDirection());
         }

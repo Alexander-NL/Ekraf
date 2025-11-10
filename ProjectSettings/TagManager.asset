@@ -9,6 +9,7 @@ TagManager:
   - Arrow
   - Hero
   - Turret
+  - Boss
   layers:
   - Default
   - TransparentFX
