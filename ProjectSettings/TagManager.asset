@@ -10,6 +10,7 @@ TagManager:
   - Hero
   - Turret
   - Boss
+  - Spike
   layers:
   - Default
   - TransparentFX

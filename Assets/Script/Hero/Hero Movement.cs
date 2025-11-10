@@ -32,6 +32,7 @@ public class HeroMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 10f;
 
     [Header("Raycast Settings")]
+    [SerializeField] private float upperRay = 4f;
     [SerializeField] private float raycastDistance = 5f;
     [SerializeField] private LayerMask raycastLayerMask = 1;
     [SerializeField] private Color capsuleRayColor = Color.red;
@@ -93,7 +94,7 @@ public class HeroMovement : MonoBehaviour
     private void PerformRaycasts()
     {
         Vector2 capsuleRayOrigin = transform.position;
-        Vector2 aboveRayOrigin = (Vector2)transform.position + Vector2.up * 4f;
+        Vector2 aboveRayOrigin = (Vector2)transform.position + Vector2.up * upperRay;
 
         Vector2 rayDirection = CurrentState == MovementState.MovingRight ? Vector2.right : Vector2.left;
 

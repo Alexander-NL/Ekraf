@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class HeroRespawn : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class HeroRespawn : MonoBehaviour
     public bool Dead;
     public float respawnTimer = 1f;
     public MovementState earlyMovementState;
+    public CapsuleCollider2D box2D;
 
     [Header("Object & Script Reference")]
     public GameObject respawnLocation;
@@ -20,7 +22,7 @@ public class HeroRespawn : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Arrow"))
+        if (collision.collider.CompareTag("Arrow") || collision.collider.CompareTag("Spike"))
         {
             Debug.Log("Dead");
             DeadCounter++;
@@ -31,8 +33,10 @@ public class HeroRespawn : MonoBehaviour
     IEnumerator Respawn()
     {
         Dead = true;
+        box2D.enabled = false;
         yield return new WaitForSeconds(respawnTimer);
         Dead = false;
+        box2D.enabled = true;
         this.transform.position = respawnLocation.transform.position;
         heroMovement.CurrentState = earlyMovementState;
     }
