@@ -46,6 +46,7 @@ public class PlayerAttackHero : MonoBehaviour
 
             if (HSD.MidAirSlap) return;
             BGMmanager.Instance.PlayerSlap("Slap");
+            BGMmanager.Instance.PlayerSfxSet("Slap");
             HSD.CalculateSlapLocation(mouseWorldPosition);
 
             impulseSource.GenerateImpulse();

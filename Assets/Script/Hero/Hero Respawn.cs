@@ -46,6 +46,7 @@ public class HeroRespawn : MonoBehaviour
         Dead = true;
         box2D.enabled = false;
 
+        BGMmanager.Instance.PlayerSfxSet("Dead");
         heroMovement.ReverseJump();
 
         yield return new WaitForSeconds(respawnTimer);

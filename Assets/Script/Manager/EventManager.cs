@@ -4,6 +4,8 @@ using UnityEngine.Events;
 public class EventManager : MonoBehaviour
 {
     public UnityEvent BossBattle;
+    public UnityEvent CutsceneStart;
+    public UnityEvent GameplayStart;
 
     public void Start()
     {

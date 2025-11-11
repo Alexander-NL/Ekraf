@@ -64,6 +64,11 @@ public class HeroMovement : MonoBehaviour
                 randomActionCooldown = 10f;
             }
 
+            if (BGMmanager.Instance.PlayerSfxAudio.clip != BGMmanager.Instance.HeroWalk && !stunned && !canJump && !heroRespawn.Dead)
+            {
+                BGMmanager.Instance.PlayerSfxSet("Walk");
+            }
+
             float direction = CurrentState == MovementState.MovingRight ? 1f : -1f;
             rb.linearVelocity = new Vector2(direction * currSpeed, rb.linearVelocity.y);
         }
@@ -86,9 +91,11 @@ public class HeroMovement : MonoBehaviour
     private IEnumerator OneSecondAction()
     {
         currSpeed = sprintSpeed;
+        BGMmanager.Instance.PlayerSfxSet("Run");
 
         yield return new WaitForSeconds(1f);
 
+        BGMmanager.Instance.PlayerSfxSet("Walk");
         currSpeed = moveSpeed;
     }
 
@@ -133,16 +140,24 @@ public class HeroMovement : MonoBehaviour
 
     public void Jump()
     {
+        if (!canJump)
+        {
+            canJump = true;
+        }
+
+        BGMmanager.Instance.PlayerSfxSet("Jump");
         rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.75f, jumpForce);
     }
 
     public void FastJump()
     {
+        BGMmanager.Instance.PlayerSfxSet("Jump");
         rb.linearVelocity = new Vector2(rb.linearVelocity.x * 1.5f, jumpForce);
     }
 
     public void ReverseJump()
     {
+        BGMmanager.Instance.PlayerSfxSet("Jump");
         rb.linearVelocity = new Vector2(-rb.linearVelocity.x * 1.5f, jumpForce);
     }
 
@@ -151,6 +166,7 @@ public class HeroMovement : MonoBehaviour
         if (collision.gameObject.tag == "Ground")
         {
             isGrounded = true;
+            canJump = false;
             detect.MidAirSlap = false;
             return;
         }

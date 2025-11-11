@@ -57,6 +57,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Next",
+            "id": "5ffca7fc-c150-4128-84fa-c6eb2a07b4ca",
+            "actions": [
+                {
+                    "name": "Next",
+                    "type": "Button",
+                    "id": "716d74b3-3cad-43a5-80bc-ab1025d425ad",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Keyboard Next",
+                    "type": "Button",
+                    "id": "d586ba93-34b7-4af6-bea6-8b68a3dac51d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "79a56f42-fb3f-4206-910e-792892177017",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0c6a2d0-b87c-4939-80c7-60b1c061a719",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Keyboard Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

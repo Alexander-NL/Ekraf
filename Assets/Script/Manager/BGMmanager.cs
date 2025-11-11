@@ -12,6 +12,8 @@ public class BGMmanager : MonoBehaviour
 
     public AudioSource SfxAudio;
     public AudioSource SfxAudioExtra;
+
+    public AudioSource PlayerSfxAudio;
     public AudioSource EnemySFX;
 
     [Header("BGM related")]
@@ -112,6 +114,41 @@ public class BGMmanager : MonoBehaviour
         StartCoroutine(MixSources(MainMenuBgm));
     }
 
+    /// <summary>
+    /// Walk, Jump, Dead, Slap, Run (Uses playerSFXaudio and SfxAudioExtra)
+    /// </summary>
+    /// <param name="temp"></param>
+    public void PlayerSfxSet(string temp)
+    {
+        switch(temp)
+        {
+            case "Walk":
+                PlayerSfxAudio.loop = true;
+                PlayerSfxAudio.clip = HeroWalk;
+                PlayerSfxAudio.Play();
+                break;
+            case "Jump":
+                PlayerSfxAudio.loop = false;
+                PlayerSfxAudio.clip = HeroJump;
+                PlayerSfxAudio.Play();
+                break;
+            case "Dead":
+                PlayerSfxAudio.loop = false;
+                PlayerSfxAudio.clip = HeroDead;
+                PlayerSfxAudio.Play();
+                break;
+            case "Run":
+                PlayerSfxAudio.loop = true;
+                PlayerSfxAudio.clip = HeroRun;
+                PlayerSfxAudio.Play();
+                break;
+            case "Slap":
+                SfxAudioExtra.loop = false;
+                SfxAudioExtra.clip = HeroSlapped;
+                SfxAudioExtra.Play();
+                break;
+        }
+    }
 
     IEnumerator MixSources(AudioClip target)
     {
