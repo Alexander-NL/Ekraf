@@ -727,7 +727,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2461,6 +2461,7 @@ GameObject:
   - component: {fileID: 1195692715}
   - component: {fileID: 1195692717}
   - component: {fileID: 1195692718}
+  - component: {fileID: 1195692719}
   m_Layer: 0
   m_Name: Piston
   m_TagString: Untagged
@@ -2555,10 +2556,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc8f002ac203af443947fe453485c91a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
+  isTrap: 1
   slamDownSpeed: 10
   returnUpSpeed: 3
   slamDistance: 4
   boxCollider: {fileID: 1195692718}
+  impulseSource: {fileID: 1195692719}
 --- !u!61 &1195692718
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2605,6 +2608,66 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1195692719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195692713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd438dd108a0f284aa931a2da434f1d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineCollisionImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 3
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.4
+    ImpulseType: 1
+    DissipationRate: 0.75
+    RawSignal: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: 0, y: 0.25, z: 0}
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  IgnoreTag: 
+  UseImpactDirection: 0
+  ScaleImpactWithMass: 0
+  ScaleImpactWithSpeed: 0
 --- !u!1 &1224980995
 GameObject:
   m_ObjectHideFlags: 0
@@ -3225,7 +3288,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1656153665
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3448,7 +3511,7 @@ MonoBehaviour:
       m_RotationOrder: 4
     ImpulseDuration: 0.2
     ImpulseType: 1
-    DissipationRate: 0.5
+    DissipationRate: 0.75
     RawSignal: {fileID: 0}
     AmplitudeGain: 1
     FrequencyGain: 1
