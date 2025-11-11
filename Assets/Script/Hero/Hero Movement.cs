@@ -13,6 +13,7 @@ public class HeroMovement : MonoBehaviour
     [Header("Reference")]
     public Rigidbody2D rb;
     public HeroRespawn heroRespawn;
+    public HeroSlapDetect detect;
 
     [Header("Movement Settings")]
     public MovementState CurrentState;
@@ -135,6 +136,11 @@ public class HeroMovement : MonoBehaviour
         rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.75f, jumpForce);
     }
 
+    public void FastJump()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x * 1.5f, jumpForce);
+    }
+
     public void ReverseJump()
     {
         rb.linearVelocity = new Vector2(-rb.linearVelocity.x * 1.5f, jumpForce);
@@ -145,6 +151,7 @@ public class HeroMovement : MonoBehaviour
         if (collision.gameObject.tag == "Ground")
         {
             isGrounded = true;
+            detect.MidAirSlap = false;
             return;
         }
         if (collision.gameObject.tag == "Wall" && !canJump && isGrounded)

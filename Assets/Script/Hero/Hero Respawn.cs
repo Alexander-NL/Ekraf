@@ -34,10 +34,14 @@ public class HeroRespawn : MonoBehaviour
     {
         Dead = true;
         box2D.enabled = false;
+
+        heroMovement.ReverseJump();
+
         yield return new WaitForSeconds(respawnTimer);
         Dead = false;
         box2D.enabled = true;
-        this.transform.position = respawnLocation.transform.position;
+
         heroMovement.CurrentState = earlyMovementState;
+        this.transform.position = respawnLocation.transform.position;
     }
 }
