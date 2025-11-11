@@ -1,11 +1,12 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class HeroRespawn : MonoBehaviour
 {
     [Header("Dead related")]
     public int DeadCounter;
+    public TextMeshProUGUI deadText;
     public bool Dead;
     public float respawnTimer = 1f;
     public MovementState earlyMovementState;
@@ -17,6 +18,7 @@ public class HeroRespawn : MonoBehaviour
 
     public void Start()
     {
+        deadText.text = DeadCounter.ToString();
         earlyMovementState = heroMovement.CurrentState;
     }
 
@@ -26,8 +28,17 @@ public class HeroRespawn : MonoBehaviour
         {
             Debug.Log("Dead");
             DeadCounter++;
+            deadText.text = DeadCounter.ToString();
             StartCoroutine(Respawn());
         }
+    }
+
+    public void Retry()
+    {
+        DeadCounter = 0;
+        deadText.text = DeadCounter.ToString();
+        heroMovement.CurrentState = earlyMovementState;
+        this.transform.position = respawnLocation.transform.position;
     }
 
     IEnumerator Respawn()

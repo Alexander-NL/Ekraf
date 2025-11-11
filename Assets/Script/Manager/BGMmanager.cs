@@ -11,6 +11,7 @@ public class BGMmanager : MonoBehaviour
     public AudioSource BgmAudio;
 
     public AudioSource SfxAudio;
+    public AudioSource SfxAudioExtra;
     public AudioSource EnemySFX;
 
     [Header("BGM related")]
@@ -18,6 +19,20 @@ public class BGMmanager : MonoBehaviour
     public AudioClip BossBgm;
     public AudioClip MainMenuBgm;
     public AudioClip GameplayBgm;
+
+    [Header("UI related")]
+    public AudioClip ClickSound;
+
+    [Header("Hero related")]
+    public AudioClip HeroDead;
+    public AudioClip HeroWalk;
+    public AudioClip HeroRun;
+    public AudioClip HeroSlapped;
+    public AudioClip HeroJump;
+
+    [Header("Player related")]
+    public AudioClip parry;
+    public AudioClip slap;
 
     [Header("Audio Level")]
     [Range(0f, 1f)]
@@ -54,6 +69,32 @@ public class BGMmanager : MonoBehaviour
         BgmAudio.volume = BgmVolume;
         EnemySFX.volume = EnemyVolume;
         SfxAudio.volume = SfxVolume;
+    }
+
+    public void SfxOnclick()
+    {
+        SfxAudio.clip = ClickSound;
+        SfxAudio.Play();
+    }
+
+
+    /// <summary>
+    /// Either Slap for slapping sound or Parry for parry sound
+    /// </summary>
+    /// <param name="temp"></param>
+    public void PlayerSlap(string temp)
+    {
+        switch (temp)
+        {
+            case "Slap":
+                SfxAudio.clip = parry;
+                SfxAudio.Play();
+                break;
+            case "Parry":
+                SfxAudio.clip = slap;
+                SfxAudio.Play();
+                break;
+        }
     }
 
     public void ChangeToGameplayBgm()

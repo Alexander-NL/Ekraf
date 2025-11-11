@@ -1,9 +1,10 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class HoverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class HoverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] private GameObject hoverImage;
     private TMP_Text buttonText;
@@ -20,6 +21,13 @@ public class HoverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (hoverImage != null)
             hoverImage.GetComponent<CanvasGroup>().alpha = 1f;
         buttonText.color = Color.yellow;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (hoverImage != null)
+            hoverImage.GetComponent<CanvasGroup>().alpha = 0f;
+        buttonText.color = textColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)

@@ -11,6 +11,8 @@ public class PlayerAttackHero : MonoBehaviour
     [Header("Slap Related")]
     public float slapCooldown = 1.5f;
     public bool canSlap;
+
+    public PlayerMiscScript playerMiscScript;
     public CinemachineImpulseSource impulseSource;
 
     private Vector2 mouseWorldPosition;
@@ -29,6 +31,7 @@ public class PlayerAttackHero : MonoBehaviour
 
     private void GetMouseLocation(InputAction.CallbackContext context)
     {
+        if (playerMiscScript.paused) return;
         Debug.Log("Clicking");
         Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
@@ -42,6 +45,7 @@ public class PlayerAttackHero : MonoBehaviour
             HeroSlapDetect HSD = hit.gameObject.GetComponent<HeroSlapDetect>();
 
             if (HSD.MidAirSlap) return;
+            BGMmanager.Instance.PlayerSlap("Slap");
             HSD.CalculateSlapLocation(mouseWorldPosition);
 
             impulseSource.GenerateImpulse();
@@ -57,6 +61,8 @@ public class PlayerAttackHero : MonoBehaviour
             ArrowBehaviour AB = hit.GetComponent<ArrowBehaviour>();
 
             impulseSource.GenerateImpulse();
+            BGMmanager.Instance.PlayerSlap("Parry");
+
             AB.Parry();
             StartCoroutine(ImpactFrames());
             return;
@@ -67,7 +73,11 @@ public class PlayerAttackHero : MonoBehaviour
     {
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(0.5f);
-        Time.timeScale = 1f;
+
+        if (!playerMiscScript.paused)
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     IEnumerator cooldown()

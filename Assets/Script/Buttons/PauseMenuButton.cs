@@ -3,39 +3,39 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuButton : MonoBehaviour
 {
-    // not include pausing button
-
     [SerializeField] GameObject pauseCanvas;
+    [SerializeField] GameObject optionsCanvas;
+
+    public HeroRespawn HR;
+    public PlayerMiscScript PMS;
 
     public void ResumeButtonClick()
     {
-        // click sound
+        BGMmanager.Instance.SfxOnclick();
         pauseCanvas.SetActive(false);
+        PMS.paused = false;
         Time.timeScale = 1.0f;
-
     }
 
     public void RetryButtonClick()
     {
-        SceneManager.LoadScene("GamePlay");
+        BGMmanager.Instance.SfxOnclick();
+        Time.timeScale = 1.0f;
+        HR.Retry();
+        PMS.paused = false;
+        pauseCanvas.SetActive(false);
     }
 
     public void OptionsButtonClick()
     {
-        // click sfx
-        // same bgm as current scene
-        SceneManager.LoadScene("OptionsMenu", LoadSceneMode.Additive);
-    }
-
-    public void MainMenuButtonClick()
-    {
-        // click sound
-        SceneManager.LoadScene("MainMenu");
+        BGMmanager.Instance.SfxOnclick();
+        optionsCanvas.SetActive(true);
+        pauseCanvas.SetActive(false);
     }
 
     public void QuitButtonClick()
     {
-        // click sfx
+        BGMmanager.Instance.SfxOnclick();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

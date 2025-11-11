@@ -1,24 +1,30 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class OptionsButton : MonoBehaviour
 {
+    public GameObject OptionCanvas;
+    public GameObject PauseCanvas;
     [SerializeField] Slider BGMSlider;
     [SerializeField] Slider SFXSlider;
 
-    public void loadVolumetoSlider()
+    public void Start()
     {
-        // load each volume to slider
+        BGMSlider.value = BGMmanager.Instance.BgmVolume;
+        SFXSlider.value = BGMmanager.Instance.SfxVolume;
     }
 
-    public void loadSlidertoVolume()
+    private void Update()
     {
-        // load slide value to volume
+        BGMmanager.Instance.BgmVolume = BGMSlider.value;
+        BGMmanager.Instance.SfxVolume = SFXSlider.value;
+        BGMmanager.Instance.EnemyVolume = SFXSlider.value;
     }
 
     public void backButton()
     {
-        SceneManager.UnloadSceneAsync("OptionsMenu");
+        BGMmanager.Instance.SfxOnclick();
+        PauseCanvas.SetActive(true);
+        OptionCanvas.SetActive(false);
     }
 }
