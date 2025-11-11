@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public enum SlapState
 {
@@ -17,6 +18,7 @@ public class HeroSlapDetect : MonoBehaviour
 
     [Header("Enum related")]
     public SlapState whereSlap;
+    public bool MidAirSlap;
 
     private Vector2 locationDifference;
 
@@ -27,29 +29,39 @@ public class HeroSlapDetect : MonoBehaviour
 
     public void CalculateSlapLocation(Vector2 slapVector2)
     {
+        if (MidAirSlap) return;
         Vector2 heroLocation = this.transform.position;
 
         locationDifference = heroLocation - slapVector2;
 
-        if (locationDifference.x < -0.3 && locationDifference.y > 0)
+        //when jumping
+        if (!heroMovement.isGrounded)
         {
-            whereSlap = SlapState.LowRight;
+            if (locationDifference.x < -0.3 && locationDifference.y > 0)
+            {
+                whereSlap = SlapState.LowRight;
+            }
+            else if (locationDifference.x > 0.3 && locationDifference.y > 0)
+            {
+                whereSlap = SlapState.LowLeft;
+            }
+            else if (locationDifference.x < 0.3 && locationDifference.x > -0.3 && locationDifference.y > 0)
+            {
+                whereSlap = SlapState.Middle;
+            }
         }
-        else if(locationDifference.x > 0.3 && locationDifference.y > 0)
+
+        //When no jumping
+        if (heroMovement.isGrounded)
         {
-            whereSlap = SlapState.LowLeft;
-        }
-        else if(locationDifference.x < 0 && locationDifference.y < 0)
-        {
-            whereSlap = SlapState.HighRight;
-        }
-        else if(locationDifference.x > 0 && locationDifference.y < 0)
-        {
-            whereSlap = SlapState.HighLeft;
-        }
-        else if (locationDifference.x < 0.3 && locationDifference.x > -0.3 && locationDifference.y > 0)
-        {
-            whereSlap = SlapState.Middle;
+            if (locationDifference.x < 0)
+            {
+                whereSlap = SlapState.HighRight;
+            }
+            else if (locationDifference.x > 0)
+            {
+                whereSlap = SlapState.HighLeft;
+            }
         }
 
         CheckWhatSlap();
@@ -88,19 +100,32 @@ public class HeroSlapDetect : MonoBehaviour
         if (heroMovement.CurrentState == MovementState.MovingRight && whereSlap == SlapState.LowRight && !heroMovement.isGrounded)
         {
             heroMovement.CurrentState = MovementState.MovingLeft;
+            MidAirSlap = true;
             heroMovement.ReverseJump();
             return;
         }
         else if (heroMovement.CurrentState == MovementState.MovingLeft && whereSlap == SlapState.LowLeft && !heroMovement.isGrounded)
         {
             heroMovement.CurrentState = MovementState.MovingRight;
+            MidAirSlap = true;
             heroMovement.ReverseJump();
             return;
         }
+        else if (heroMovement.CurrentState == MovementState.MovingRight && whereSlap == SlapState.LowLeft && !heroMovement.isGrounded)
+        {
+            MidAirSlap = true;
+            heroMovement.FastJump();
+        }
+        else if (heroMovement.CurrentState == MovementState.MovingLeft && whereSlap == SlapState.LowRight && !heroMovement.isGrounded)
+        {
+            MidAirSlap = true;
+            heroMovement.FastJump();
+        }
 
         //Double Jump
-        if(whereSlap == SlapState.Middle && !heroMovement.isGrounded)
+        if (whereSlap == SlapState.Middle && !heroMovement.isGrounded)
         {
+            MidAirSlap = true;
             heroMovement.Jump();
             return;
         }

@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -14,8 +15,11 @@ public class Door : MonoBehaviour
     [Header("References")]
     [SerializeField] private BoxCollider2D boxCollider;
     public CinemachineImpulseSource impulseSource;
+    [SerializeField] float goUpDelay = 0.5f;
+    [SerializeField] float delayBeforeSlam = 1f;
 
-    private Vector3 originalPosition;
+    [SerializeField] Vector3 originalPosition;
+    [SerializeField] Vector3 slamTargetPosition;
     private bool isSlammingDown = false;
     private bool isReturningUp = false;
 
@@ -25,6 +29,7 @@ public class Door : MonoBehaviour
             boxCollider = GetComponent<BoxCollider2D>();
 
         originalPosition = transform.position;
+        slamTargetPosition = originalPosition + Vector3.down * slamDistance;
 
         if (isTrap)
         {
@@ -52,9 +57,9 @@ public class Door : MonoBehaviour
 
     private void SlamDown()
     {
-        transform.Translate(Vector3.down * slamDownSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, slamTargetPosition, slamDownSpeed * Time.deltaTime);
 
-        if (ReachedMaxDistance())
+        if (transform.position == slamTargetPosition)
         {
             OnHitGround();
         }
@@ -64,24 +69,26 @@ public class Door : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, originalPosition, returnUpSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, originalPosition) < 0.1f)
+        if (transform.position == originalPosition)
         {
             OnReturnedToOriginal();
         }
     }
 
-    private bool ReachedMaxDistance()
-    {
-        return Vector3.Distance(transform.position, originalPosition) >= slamDistance;
-    }
-
     private void OnHitGround()
     {
         isSlammingDown = false;
-        isReturningUp = true;
         Debug.Log("Hit ground! Returning up slowly...");
 
         impulseSource.GenerateImpulse();
+
+        StartCoroutine(DelayGoUp());
+    }
+
+    IEnumerator DelayGoUp()
+    {
+        yield return new WaitForSeconds(goUpDelay);
+        isReturningUp = true;
     }
 
     private void OnReturnedToOriginal()
@@ -90,7 +97,7 @@ public class Door : MonoBehaviour
 
         if (isTrap)
         {
-            Invoke("StartSlamming", 2f);
+            Invoke("StartSlamming", delayBeforeSlam);
         }
     }
 

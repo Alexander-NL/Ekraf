@@ -40,7 +40,10 @@ public class PlayerAttackHero : MonoBehaviour
         if (hit != null && hit is CapsuleCollider2D && !canSlap)
         {
             HeroSlapDetect HSD = hit.gameObject.GetComponent<HeroSlapDetect>();
+
+            if (HSD.MidAirSlap) return;
             HSD.CalculateSlapLocation(mouseWorldPosition);
+
             impulseSource.GenerateImpulse();
 
             StartCoroutine(cooldown());

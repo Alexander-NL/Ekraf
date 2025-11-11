@@ -522,7 +522,7 @@ Transform:
   m_GameObject: {fileID: 220139013}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -24.3, y: -3.25, z: -10}
+  m_LocalPosition: {x: -22.64, y: -3.25, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1745,7 +1745,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.002026558, y: -0.44596583}
+  m_Offset: {x: 0.006893158, y: -0.44596583}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1755,7 +1755,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.92295265, y: 0.16130507}
+  m_Size: {x: 0.7623863, y: 0.16130507}
   m_EdgeRadius: 0
 --- !u!1 &802529583
 GameObject:
@@ -2468,7 +2468,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1195692715
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2515,9 +2515,9 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2536,7 +2536,7 @@ Transform:
   m_GameObject: {fileID: 1195692713}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -27.49, y: -1.08, z: 0}
+  m_LocalPosition: {x: -27.49, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2562,6 +2562,10 @@ MonoBehaviour:
   slamDistance: 4
   boxCollider: {fileID: 1195692718}
   impulseSource: {fileID: 1195692719}
+  goUpDelay: 0.5
+  delayBeforeSlam: 1
+  originalPosition: {x: 0, y: 0, z: 0}
+  slamTargetPosition: {x: 0, y: 0, z: 0}
 --- !u!61 &1195692718
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2921,7 +2925,7 @@ Transform:
   m_GameObject: {fileID: 1327047920}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -24.3, y: -3.25, z: 0}
+  m_LocalPosition: {x: -22.54, y: -3.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3288,7 +3292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1656153665
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3356,7 +3360,7 @@ Transform:
   m_GameObject: {fileID: 1656153664}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -24.3, y: -3.25, z: 0}
+  m_LocalPosition: {x: -22.64, y: -3.25, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3440,6 +3444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HeroMovement
   rb: {fileID: 1656153667}
   heroRespawn: {fileID: 1656153671}
+  detect: {fileID: 1656153670}
   CurrentState: 1
   moveSpeed: 3
   sprintSpeed: 5
@@ -3469,6 +3474,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HeroSlapDetect
   heroMovement: {fileID: 1656153669}
   whereSlap: 0
+  MidAirSlap: 0
 --- !u!114 &1656153671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4653,7 +4659,7 @@ Transform:
   m_GameObject: {fileID: 2126644487}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -24.3, y: -3.25, z: -10}
+  m_LocalPosition: {x: -22.64, y: -3.25, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
