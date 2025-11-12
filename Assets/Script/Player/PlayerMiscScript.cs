@@ -9,6 +9,7 @@ public class PlayerMiscScript : MonoBehaviour
     [Header("Pause")]
     public GameObject pauseObject;
     public bool paused;
+    public bool isOption;
 
     private void OnEnable()
     {
@@ -24,15 +25,20 @@ public class PlayerMiscScript : MonoBehaviour
 
     public void OnPause(InputAction.CallbackContext context)
     {
+        if (isOption) return;
         paused = !paused;
 
         if (paused)
         {
+            BGMmanager.Instance.PlayerSfxAudio.Pause();
+            Cursor.visible = true;
             pauseObject.SetActive(true);
             Time.timeScale = 0f;
         }
         else if (!paused)
         {
+            BGMmanager.Instance.PlayerSfxAudio.UnPause();
+            Cursor.visible = false;
             pauseObject.SetActive(false);
             Time.timeScale = 1f;
         }

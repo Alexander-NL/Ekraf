@@ -15,6 +15,7 @@ public class HeroSlapDetect : MonoBehaviour
 {
     [Header("Script Reference")]
     public HeroMovement heroMovement;
+    public HeroAnim heroAnim;
 
     [Header("Enum related")]
     public SlapState whereSlap;
@@ -72,8 +73,10 @@ public class HeroSlapDetect : MonoBehaviour
         //if backshot Stop 1 sec
         //if di face slap turn around
 
+        heroAnim.SlappedTrigger();
+
         //Bitch slap
-        if(heroMovement.CurrentState == MovementState.MovingRight && whereSlap == SlapState.HighRight)
+        if (heroMovement.CurrentState == MovementState.MovingRight && whereSlap == SlapState.HighRight)
         {
             heroMovement.CurrentState = MovementState.MovingLeft;
             return;

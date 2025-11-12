@@ -1,76 +1,142 @@
 using System.Collections;
+using Unity.Burst.CompilerServices;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerAttackHero : MonoBehaviour
 {
     [Header("Input Action Reference")]
     public InputActionReference parryAction;
+    public InputActionReference slapAction;
+
+    [Header("Spirit related")]
+    public GameObject Bird;
+    public GameObject Weapon;
+    public Animator WeaponControl;
 
     [Header("Slap Related")]
     public float slapCooldown = 1.5f;
     public bool canSlap;
 
+    public float parryCooldown = 1.5f;
+    public bool canParry;
+
     public PlayerMiscScript playerMiscScript;
     public CinemachineImpulseSource impulseSource;
+    [SerializeField] private LayerMask targetLayerMask;
 
-    private Vector2 mouseWorldPosition;
+    public Vector2 mouseWorldPosition;
+
+    private HeroSlapDetect HSD;
+    private ArrowBehaviour AB;
 
     private void OnEnable()
     {
         parryAction.action.Enable();
-        parryAction.action.performed += GetMouseLocation;
+        slapAction.action.Enable();
+        parryAction.action.performed += ParryGetMouseLocation;
+        slapAction.action.performed += SlapGetMouseLocation;
     }
 
     private void OnDisable()
     {
-        parryAction.action.performed -= GetMouseLocation;
+        slapAction.action.performed -= SlapGetMouseLocation;
+        parryAction.action.performed -= ParryGetMouseLocation;
         parryAction.action.Disable();
+        slapAction.action.Disable();
     }
 
-    private void GetMouseLocation(InputAction.CallbackContext context)
+    private void Start()
+    {
+        Cursor.visible = false;
+        Weapon.SetActive(false);
+    }
+
+    public void Update()
+    {
+        if (playerMiscScript.paused) return;
+        Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+        Weapon.transform.position = mouseWorldPosition;
+        Bird.transform.position = mouseWorldPosition;
+    }
+
+    private void ParryGetMouseLocation(InputAction.CallbackContext context)
     {
         if (playerMiscScript.paused) return;
         Debug.Log("Clicking");
-        Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
-        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
 
-        Collider2D hit = Physics2D.OverlapPoint(mouseWorldPosition);
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(mouseWorldPosition, 0.5f, Vector2.zero, targetLayerMask);
 
-
-        //Check for Hero
-        if (hit != null && hit is CapsuleCollider2D && !canSlap)
+        foreach (RaycastHit2D hit in hits)
         {
-            HeroSlapDetect HSD = hit.gameObject.GetComponent<HeroSlapDetect>();
+            //Check for Arrow
+            if (hit.collider.tag == "Arrow" && !canSlap)
+            {
+                AB = hit.collider.GetComponent<ArrowBehaviour>();
 
-            if (HSD.MidAirSlap) return;
-            BGMmanager.Instance.PlayerSlap("Slap");
-            BGMmanager.Instance.PlayerSfxSet("Slap");
-            HSD.CalculateSlapLocation(mouseWorldPosition);
+                Weapon.SetActive(true); 
+                AB.Parry();
+                WeaponControl.SetTrigger("Parry");
+                impulseSource.GenerateImpulse();
+                BGMmanager.Instance.PlayerSlap("Parry");
 
-            impulseSource.GenerateImpulse();
+                StartCoroutine(Parrycooldown());
+                StartCoroutine(ParryImpactFrames());
+                return;
+            }
+        }  
+    }
 
-            StartCoroutine(cooldown());
-            StartCoroutine(ImpactFrames());
-            return;
-        }
+    private void SlapGetMouseLocation(InputAction.CallbackContext context)
+    {
+        if (playerMiscScript.paused) return;
+        Debug.Log("Clicking");
 
-        //Check for Arrow
-        if (hit != null && hit.tag == "Arrow" && !canSlap)
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(mouseWorldPosition, 0.5f, Vector2.zero, targetLayerMask);
+
+        foreach (RaycastHit2D hit in hits)
         {
-            ArrowBehaviour AB = hit.GetComponent<ArrowBehaviour>();
+            if (hit.collider is CapsuleCollider2D && !canSlap && hit.collider.tag == "Hero")
+            {
+                HSD = hit.collider.gameObject.GetComponent<HeroSlapDetect>();
 
-            impulseSource.GenerateImpulse();
-            BGMmanager.Instance.PlayerSlap("Parry");
+                if (HSD.MidAirSlap) return;
+                BGMmanager.Instance.PlayerSlap("Slap");
+                BGMmanager.Instance.PlayerSfxSet("Slap");
 
-            AB.Parry();
-            StartCoroutine(ImpactFrames());
-            return;
+                Weapon.SetActive(true);
+                WeaponControl.SetTrigger("Slap");
+
+                impulseSource.GenerateImpulse();
+
+                StartCoroutine(Slapcooldown());
+                StartCoroutine(SlapImpactFrames());
+                return;
+            }
         }
     }
 
-    IEnumerator ImpactFrames()
+    IEnumerator SlapImpactFrames()
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
+        HSD.CalculateSlapLocation(mouseWorldPosition);
+
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        if (!playerMiscScript.paused)
+        {
+            Time.timeScale = 1f;
+        }
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        Weapon.SetActive(false);
+    }
+
+    IEnumerator ParryImpactFrames()
     {
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(0.5f);
@@ -79,9 +145,19 @@ public class PlayerAttackHero : MonoBehaviour
         {
             Time.timeScale = 1f;
         }
+
+        yield return new WaitForSecondsRealtime(0.5f);
+        Weapon.SetActive(false);
     }
 
-    IEnumerator cooldown()
+    IEnumerator Parrycooldown()
+    {
+        canParry = true;
+        yield return new WaitForSecondsRealtime(parryCooldown);
+        canParry = false;
+    }
+
+    IEnumerator Slapcooldown()
     {
         canSlap = true;
         yield return new WaitForSecondsRealtime(slapCooldown);

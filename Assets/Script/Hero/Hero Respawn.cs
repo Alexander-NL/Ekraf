@@ -12,9 +12,15 @@ public class HeroRespawn : MonoBehaviour
     public MovementState earlyMovementState;
     public CapsuleCollider2D box2D;
 
+    [Header("Ui related")]
+    public Animator Skull;
+    public Animator Box;
+
     [Header("Object & Script Reference")]
     public GameObject respawnLocation;
     public HeroMovement heroMovement;
+    public HeroAnim heroAnim;
+    public PlayerAnim playerAnim;
 
     public void Start()
     {
@@ -46,8 +52,14 @@ public class HeroRespawn : MonoBehaviour
         Dead = true;
         box2D.enabled = false;
 
-        BGMmanager.Instance.PlayerSfxSet("Dead");
+        Skull.SetTrigger("Dead");
+        Box.SetTrigger("Dead");
+
+        playerAnim.randomizeDead();
+
         heroMovement.ReverseJump();
+        BGMmanager.Instance.PlayerSfxSet("Dead");
+        heroAnim.DeadTrigger();
 
         yield return new WaitForSeconds(respawnTimer);
         Dead = false;

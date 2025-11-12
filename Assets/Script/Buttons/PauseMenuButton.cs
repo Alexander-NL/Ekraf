@@ -11,6 +11,8 @@ public class PauseMenuButton : MonoBehaviour
 
     public void ResumeButtonClick()
     {
+        BGMmanager.Instance.PlayerSfxAudio.UnPause();
+        Cursor.visible = false;
         BGMmanager.Instance.SfxOnclick();
         pauseCanvas.SetActive(false);
         PMS.paused = false;
@@ -19,6 +21,8 @@ public class PauseMenuButton : MonoBehaviour
 
     public void RetryButtonClick()
     {
+        BGMmanager.Instance.PlayerSfxAudio.UnPause();
+        Cursor.visible = false;
         BGMmanager.Instance.SfxOnclick();
         Time.timeScale = 1.0f;
         HR.Retry();
@@ -28,6 +32,7 @@ public class PauseMenuButton : MonoBehaviour
 
     public void OptionsButtonClick()
     {
+        PMS.isOption = true;
         BGMmanager.Instance.SfxOnclick();
         optionsCanvas.SetActive(true);
         pauseCanvas.SetActive(false);

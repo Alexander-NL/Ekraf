@@ -8,6 +8,8 @@ public class OptionsButton : MonoBehaviour
     [SerializeField] Slider BGMSlider;
     [SerializeField] Slider SFXSlider;
 
+    public PlayerMiscScript PMS;
+
     public void Start()
     {
         BGMSlider.value = BGMmanager.Instance.BgmVolume;
@@ -18,11 +20,11 @@ public class OptionsButton : MonoBehaviour
     {
         BGMmanager.Instance.BgmVolume = BGMSlider.value;
         BGMmanager.Instance.SfxVolume = SFXSlider.value;
-        BGMmanager.Instance.EnemyVolume = SFXSlider.value;
     }
 
     public void backButton()
     {
+        PMS.isOption = false;
         BGMmanager.Instance.SfxOnclick();
         PauseCanvas.SetActive(true);
         OptionCanvas.SetActive(false);

@@ -14,6 +14,8 @@ public class HeroMovement : MonoBehaviour
     public Rigidbody2D rb;
     public HeroRespawn heroRespawn;
     public HeroSlapDetect detect;
+    public PlayerAnim playerAnim;
+    public HeroAnim heroAnim;
 
     [Header("Movement Settings")]
     public MovementState CurrentState;
@@ -64,11 +66,6 @@ public class HeroMovement : MonoBehaviour
                 randomActionCooldown = 10f;
             }
 
-            if (BGMmanager.Instance.PlayerSfxAudio.clip != BGMmanager.Instance.HeroWalk && !stunned && !canJump && !heroRespawn.Dead)
-            {
-                BGMmanager.Instance.PlayerSfxSet("Walk");
-            }
-
             float direction = CurrentState == MovementState.MovingRight ? 1f : -1f;
             rb.linearVelocity = new Vector2(direction * currSpeed, rb.linearVelocity.y);
         }
@@ -77,6 +74,8 @@ public class HeroMovement : MonoBehaviour
     public void RandomizedAction()
     {
         bool shouldJump = Random.Range(0, 2) == 0;
+
+        playerAnim.confused();
 
         if (shouldJump)
         {
@@ -92,10 +91,12 @@ public class HeroMovement : MonoBehaviour
     {
         currSpeed = sprintSpeed;
         BGMmanager.Instance.PlayerSfxSet("Run");
+        heroAnim.RunTrigger();
 
         yield return new WaitForSeconds(1f);
 
         BGMmanager.Instance.PlayerSfxSet("Walk");
+        heroAnim.WalkTrigger();
         currSpeed = moveSpeed;
     }
 
@@ -145,18 +146,21 @@ public class HeroMovement : MonoBehaviour
             canJump = true;
         }
 
+        heroAnim.JumpTrigger();
         BGMmanager.Instance.PlayerSfxSet("Jump");
         rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.75f, jumpForce);
     }
 
     public void FastJump()
     {
+        heroAnim.JumpTrigger();
         BGMmanager.Instance.PlayerSfxSet("Jump");
         rb.linearVelocity = new Vector2(rb.linearVelocity.x * 1.5f, jumpForce);
     }
 
     public void ReverseJump()
     {
+        heroAnim.JumpTrigger();
         BGMmanager.Instance.PlayerSfxSet("Jump");
         rb.linearVelocity = new Vector2(-rb.linearVelocity.x * 1.5f, jumpForce);
     }
@@ -165,6 +169,8 @@ public class HeroMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
+            BGMmanager.Instance.PlayerSfxSet("Walk");
+            heroAnim.WalkTrigger();
             isGrounded = true;
             canJump = false;
             detect.MidAirSlap = false;
@@ -172,6 +178,7 @@ public class HeroMovement : MonoBehaviour
         }
         if (collision.gameObject.tag == "Wall" && !canJump && isGrounded)
         {
+            heroAnim.IdleTrigger();
             StartCoroutine(ChangeDirection());
         }
     }
@@ -179,7 +186,9 @@ public class HeroMovement : MonoBehaviour
     public IEnumerator HeroGotStunned()
     {
         stunned = true;
+        heroAnim.IdleTrigger();
         yield return new WaitForSeconds(1);
+        heroAnim.WalkTrigger();
         stunned = false;
     }
 
@@ -203,6 +212,10 @@ public class HeroMovement : MonoBehaviour
         if (collision.gameObject.tag == "Ground")
         {
             isGrounded = false;
+        }
+        else if (collision.gameObject.tag == "Wall" && isGrounded)
+        {
+            heroAnim.WalkTrigger();
         }
     }
 }

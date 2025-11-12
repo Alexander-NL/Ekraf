@@ -41,8 +41,6 @@ public class BGMmanager : MonoBehaviour
     public float BgmVolume;
     [Range(0f, 1f)]
     public float SfxVolume;
-    [Range(0f, 1f)]
-    public float EnemyVolume;
 
     void OnEnable()
     {
@@ -69,8 +67,11 @@ public class BGMmanager : MonoBehaviour
     void Update()
     {
         BgmAudio.volume = BgmVolume;
-        EnemySFX.volume = EnemyVolume;
+
+        EnemySFX.volume = SfxVolume;
         SfxAudio.volume = SfxVolume;
+        PlayerSfxAudio.volume = SfxVolume;
+        SfxAudioExtra.volume = SfxVolume;
     }
 
     public void SfxOnclick()
