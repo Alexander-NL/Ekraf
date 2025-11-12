@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class MainButton : MonoBehaviour
 {
+    [SerializeField] GameObject optionsCanvas;
     public void PlayButtonClick()
     {
         // click sfx
@@ -13,9 +14,8 @@ public class MainButton : MonoBehaviour
 
     public void OptionsButtonClick()
     {
-        // click sfx
-        // same bgm as current scene
-        SceneManager.LoadScene("OptionsMenu", LoadSceneMode.Additive);
+        BGMmanager.Instance.SfxOnclick();
+        optionsCanvas.SetActive(true);
     }
 
     public void QuitButtonClick()

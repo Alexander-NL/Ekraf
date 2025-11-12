@@ -1,12 +1,19 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CutsceneManager : MonoBehaviour
 {
     [Header("")]
-    public GameObject[] CutsceneList;
-    public int temp;
+    [SerializeField] CanvasGroup[] CutsceneList;
+    [SerializeField] CanvasGroup fadeImage;
+    [SerializeField] bool isComic;
+    public int temp = 0;
+    public float fadeDuration = 1f;
+    public GameObject mouse;
 
     [Header("Input Action Reference")]
     public InputActionReference NextAction;
@@ -25,21 +32,38 @@ public class CutsceneManager : MonoBehaviour
 
     private void Start()
     {
-        StartCutscene();
+        //  ...
+        //StartCutscene();  
     }
 
     public void StartCutscene()
     {
+        Time.timeScale = 0f;
         foreach(var cutscene in CutsceneList)
         {
-            cutscene.gameObject.SetActive(false);
+            cutscene.alpha = 0f;
         }
+        StartCoroutine(FadeOutTransition(fadeImage));
 
-        CutsceneList[0].SetActive(true);
+        StartCoroutine(FadeInTransition(CutsceneList[0]));
+        mouse.SetActive(true);
     }
 
     private void NextPart(InputAction.CallbackContext context)
     {
+        if(temp == 0)
+        {
+            Time.timeScale = 0f;
+            foreach (var cutscene in CutsceneList)
+            {
+                cutscene.alpha = 0f;
+            }
+            StartCoroutine(FadeOutTransition(fadeImage));
+
+            StartCoroutine(FadeInTransition(CutsceneList[0]));
+            mouse.SetActive(true);
+        }
+        mouse.SetActive(false);
         temp++;
         UpdateCutscene(temp);
     }
@@ -49,13 +73,69 @@ public class CutsceneManager : MonoBehaviour
         if (temp >= CutsceneList.Length)
         {
             //End
-            CutsceneList[temp - 1].SetActive(false);
-            this.gameObject.SetActive(false);
+            if(isComic == false)
+            {
+                StartCoroutine(FadeOutTransition(CutsceneList[temp - 1]));
+                SceneManager.LoadScene("MainMenu");
+            }
+            else
+            {
+                StartCoroutine(FadeOutTransition(fadeImage));
+                Time.timeScale = 1f;
+                this.gameObject.SetActive(false);
+
+            }
+
         }
         else
         {
-            CutsceneList[temp].SetActive(true);
-            CutsceneList[temp - 1].SetActive(false);
+            StartCoroutine(FadeInTransition(CutsceneList[temp]));
+            if(isComic == false)
+            {
+                StartCoroutine(FadeOutTransition(CutsceneList[temp-1]));
+            }
         }
     }
+
+    IEnumerator FadeInTransition(CanvasGroup fadeCanvasGroup)
+    {
+        if (fadeCanvasGroup == null) yield break;
+
+        //yield return new WaitForSeconds(1f);
+
+        //fadeCanvasGroup.gameObject.SetActive(true);
+        fadeCanvasGroup.alpha = 0f;
+
+        float timer = 0f;
+        while (timer < fadeDuration)
+        {
+            timer += Time.unscaledDeltaTime;
+            fadeCanvasGroup.alpha = Mathf.Clamp01(timer / fadeDuration);
+            yield return null;
+        }
+
+        fadeCanvasGroup.alpha = 1f;
+        //fadeCanvasGroup.gameObject.SetActive(true);
+    }
+    IEnumerator FadeOutTransition(CanvasGroup fadeCanvasGroup)
+    {
+        if (fadeCanvasGroup == null) yield break;
+
+        //fadeCanvasGroup.gameObject.SetActive(true);
+        fadeCanvasGroup.alpha = 1f;
+
+        float timer = 0f;
+        while (timer < fadeDuration)
+        {
+            timer += Time.unscaledDeltaTime;
+            fadeCanvasGroup.alpha = 1f - Mathf.Clamp01(timer / fadeDuration);
+            yield return null;
+        }
+
+        fadeCanvasGroup.alpha = 0f;
+        //fadeCanvasGroup.gameObject.SetActive(false);
+    }
+
 }
+
+
