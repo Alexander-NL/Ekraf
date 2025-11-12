@@ -135,7 +135,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!114 &6732949180628891951
 MonoBehaviour:
@@ -1927,7 +1927,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &9099019931074377896
 MonoBehaviour:
@@ -2846,6 +2846,10 @@ PrefabInstance:
     - target: {fileID: 234772479185917431, guid: d29739a4d4b11074b98e0e80f72ff7bc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201343734998560533, guid: d29739a4d4b11074b98e0e80f72ff7bc, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4874484352824631109, guid: d29739a4d4b11074b98e0e80f72ff7bc, type: 3}
       propertyPath: m_Name

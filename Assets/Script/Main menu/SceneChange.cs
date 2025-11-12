@@ -83,7 +83,7 @@ public class SceneChange : MonoBehaviour
         while (timer < fadeDuration)
         {
             timer += Time.deltaTime;
-            float alpha = 1 - Mathf.Clamp01(timer / fadeDuration);
+            float alpha = 1 - 2*Mathf.Clamp01(timer / fadeDuration);
             fadeImage.color = new Color(0, 0, 0, alpha);
             yield return null;
         }
