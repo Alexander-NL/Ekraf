@@ -32,6 +32,7 @@ public class BGMmanager : MonoBehaviour
     public AudioClip HeroRun;
     public AudioClip HeroSlapped;
     public AudioClip HeroJump;
+    public AudioClip HeroAlert;
 
     [Header("Turret")]
     public AudioClip Shoot;
@@ -191,6 +192,11 @@ public class BGMmanager : MonoBehaviour
             case "Slap":
                 SfxAudioExtra.loop = false;
                 SfxAudioExtra.clip = HeroSlapped;
+                SfxAudioExtra.Play();
+                break;
+            case "Alert":
+                SfxAudioExtra.loop = false;
+                SfxAudioExtra.clip = HeroAlert;
                 SfxAudioExtra.Play();
                 break;
         }

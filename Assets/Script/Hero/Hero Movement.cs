@@ -16,6 +16,7 @@ public class HeroMovement : MonoBehaviour
     public HeroSlapDetect detect;
     public PlayerAnim playerAnim;
     public HeroAnim heroAnim;
+    public EventManager eventManager;
 
     [Header("Movement Settings")]
     public MovementState CurrentState;
@@ -25,6 +26,8 @@ public class HeroMovement : MonoBehaviour
     private float currSpeed;
     public bool isGrounded;
     public bool canJump;
+
+    public bool huggingWall;
 
     public bool stunned;
 
@@ -37,12 +40,20 @@ public class HeroMovement : MonoBehaviour
     [Header("Raycast Settings")]
     [SerializeField] private float upperRay = 4f;
     [SerializeField] private float raycastDistance = 5f;
+    [SerializeField] private float topRayOffset = 0.5f;
+    [SerializeField] private float topRayDistance = 2f;
+
     [SerializeField] private LayerMask raycastLayerMask = 1;
     [SerializeField] private Color capsuleRayColor = Color.red;
     [SerializeField] private Color aboveRayColor = Color.blue;
+    [SerializeField] private Color topRayColor = Color.cyan;
 
     private RaycastHit2D capsuleHit;
     private RaycastHit2D aboveHit;
+    private RaycastHit2D topHitLeft;
+    private RaycastHit2D topHitRight;
+
+    [SerializeField] bool hitCeiling;
 
     void Start()
     {
@@ -61,7 +72,7 @@ public class HeroMovement : MonoBehaviour
             randomActionCooldown -= Time.deltaTime;
             if (randomActionCooldown <= 0f)
             {
-                RandomizedAction();
+                StartCoroutine(Delay());
 
                 randomActionCooldown = 10f;
             }
@@ -69,6 +80,14 @@ public class HeroMovement : MonoBehaviour
             float direction = CurrentState == MovementState.MovingRight ? 1f : -1f;
             rb.linearVelocity = new Vector2(direction * currSpeed, rb.linearVelocity.y);
         }
+    }
+
+
+    IEnumerator Delay()
+    {
+        BGMmanager.Instance.PlayerSfxSet("Alert");
+        yield return new WaitForSeconds(1f);
+        RandomizedAction();
     }
 
     public void RandomizedAction()
@@ -105,29 +124,60 @@ public class HeroMovement : MonoBehaviour
         Vector2 capsuleRayOrigin = transform.position;
         Vector2 aboveRayOrigin = (Vector2)transform.position + Vector2.up * upperRay;
 
+        Vector2 topRayOriginLeft = (Vector2)transform.position + new Vector2(-1f, topRayOffset);
+        Vector2 topRayOriginRight = (Vector2)transform.position + new Vector2(1f, topRayOffset);
+
         Vector2 rayDirection = CurrentState == MovementState.MovingRight ? Vector2.right : Vector2.left;
 
         if (CurrentState == MovementState.MovingRight)
         {
             capsuleHit = Physics2D.Raycast(capsuleRayOrigin, Vector2.right, raycastDistance, raycastLayerMask);
             aboveHit = Physics2D.Raycast(aboveRayOrigin, Vector2.right, raycastDistance, raycastLayerMask);
+            topHitLeft = Physics2D.Raycast(topRayOriginLeft, Vector2.up, topRayDistance, raycastLayerMask);
+            topHitRight = Physics2D.Raycast(topRayOriginRight, Vector2.up, topRayDistance, raycastLayerMask);
         }
         else if (CurrentState == MovementState.MovingLeft)
         {
             capsuleHit = Physics2D.Raycast(capsuleRayOrigin, Vector2.left, raycastDistance, raycastLayerMask);
             aboveHit = Physics2D.Raycast(aboveRayOrigin, Vector2.left, raycastDistance, raycastLayerMask);
+            topHitLeft = Physics2D.Raycast(topRayOriginLeft, Vector2.up, topRayDistance, raycastLayerMask);
+            topHitRight = Physics2D.Raycast(topRayOriginRight, Vector2.up, topRayDistance, raycastLayerMask);
         }
 
+        // Debug visualization
         Debug.DrawRay(capsuleRayOrigin, rayDirection * raycastDistance, capsuleHit.collider ? Color.red : capsuleRayColor);
         Debug.DrawRay(aboveRayOrigin, rayDirection * raycastDistance, aboveHit.collider ? Color.red : aboveRayColor);
+        Debug.DrawRay(topRayOriginLeft, Vector2.up * topRayDistance, topHitLeft.collider ? Color.red : topRayColor);
+        Debug.DrawRay(topRayOriginRight, Vector2.up * topRayDistance, topHitRight.collider ? Color.red : topRayColor);
 
-        if (capsuleHit.collider != null && aboveHit.collider == null && capsuleHit.collider.gameObject.tag == "Wall")
+        //Atap
+        if ((topHitLeft.collider != null && 
+            (topHitLeft.collider.gameObject.tag == "Ground" || topHitLeft.collider.gameObject.tag == "Wall" || topHitLeft.collider.gameObject.tag == "Spike")) 
+            ||
+            (topHitRight.collider != null && 
+            (topHitRight.collider.gameObject.tag == "Ground" || topHitLeft.collider.gameObject.tag == "Wall" || topHitLeft.collider.gameObject.tag == "Spike")))
+        {
+            hitCeiling = true;
+        }
+        else
+        {
+            hitCeiling = false;
+        }
+
+
+        if (!hitCeiling && aboveHit.collider != null && aboveHit.collider.gameObject.tag == "Ground")
         {
             canJump = true;
             Jump();
         }
 
-        if (aboveHit.collider != null && aboveHit.collider.gameObject.tag == "Wall")
+        if(!hitCeiling && capsuleHit.collider != null && (capsuleHit.collider.gameObject.tag == "Ground" || capsuleHit.collider.gameObject.tag == "Spike"))
+        {
+            canJump = true;
+            Jump();
+        }
+
+        if (aboveHit.collider != null && aboveHit.collider.gameObject.tag == "Wall" && capsuleHit.collider != null && capsuleHit.collider.gameObject.tag == "Wall")
         {
             canJump = false;
         }
@@ -167,6 +217,27 @@ public class HeroMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if(collision.gameObject.tag == "Door")
+        {
+            heroAnim.IdleTrigger();
+            eventManager.InvokeNextLevel();
+            return;
+        }
+        if (collision.gameObject.tag == "Wall" && !canJump && isGrounded)
+        {
+            heroAnim.IdleTrigger();
+            StartCoroutine(ChangeDirection());
+        }
+
+        if (collision.gameObject.tag == "Ground" && huggingWall)
+        {
+            isGrounded = true;
+            canJump = false;
+            heroAnim.IdleTrigger();
+            StartCoroutine(ChangeDirection());
+            return;
+        }
+
         if (collision.gameObject.tag == "Ground")
         {
             BGMmanager.Instance.PlayerSfxSet("Walk");
@@ -176,10 +247,10 @@ public class HeroMovement : MonoBehaviour
             detect.MidAirSlap = false;
             return;
         }
-        if (collision.gameObject.tag == "Wall" && !canJump && isGrounded)
+        else if (collision.gameObject.tag == "Wall")
         {
-            heroAnim.IdleTrigger();
-            StartCoroutine(ChangeDirection());
+            huggingWall = true;
+            return;
         }
     }
 
@@ -203,6 +274,7 @@ public class HeroMovement : MonoBehaviour
         {
             CurrentState = MovementState.MovingLeft;
         }
+        heroAnim.WalkTrigger();
 
         canJump = true;
     }
@@ -213,8 +285,13 @@ public class HeroMovement : MonoBehaviour
         {
             isGrounded = false;
         }
+        if(collision.gameObject.tag == "Wall")
+        {
+            huggingWall = false;
+        }
         else if (collision.gameObject.tag == "Wall" && isGrounded)
         {
+            huggingWall = false;
             heroAnim.WalkTrigger();
         }
     }

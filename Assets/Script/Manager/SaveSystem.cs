@@ -14,9 +14,19 @@ public class SaveSystem : MonoBehaviour
 
     private string savePath;
     private SaveData currentSaveData;
+    public int Death = 0;
 
     void Awake()
     {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+
         savePath = Path.Combine(Application.persistentDataPath, "death_save.json");
 
         Debug.Log($"JSON Save File Location: {savePath}");
@@ -82,7 +92,11 @@ public class SaveSystem : MonoBehaviour
         return currentSaveData.deathTotal;
     }
 
-    // Reset death total to maximum
+    public void NextScene(int temp)
+    {
+        Death = Death + temp;
+    }
+
     public void ResetDeathTotal()
     {
         currentSaveData.deathTotal = int.MaxValue;

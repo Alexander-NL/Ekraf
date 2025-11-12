@@ -5,7 +5,7 @@ using UnityEngine;
 public class HeroRespawn : MonoBehaviour
 {
     [Header("Dead related")]
-    public int DeadCounter;
+    public int DeadCounter = 0;
     public TextMeshProUGUI deadText;
     public bool Dead;
     public float respawnTimer = 1f;
@@ -21,6 +21,7 @@ public class HeroRespawn : MonoBehaviour
     public HeroMovement heroMovement;
     public HeroAnim heroAnim;
     public PlayerAnim playerAnim;
+    public TurretManager turretManager;
 
     public void Start()
     {
@@ -34,6 +35,8 @@ public class HeroRespawn : MonoBehaviour
         {
             Debug.Log("Dead");
             DeadCounter++;
+            turretManager.RefreshTurret();
+
             deadText.text = DeadCounter.ToString();
             StartCoroutine(Respawn());
         }

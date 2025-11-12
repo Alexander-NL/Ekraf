@@ -70,7 +70,7 @@ public class TurretBehaviour : MonoBehaviour
         if (turretHP <= 0)
         {
             BGMmanager.Instance.TurretDead();
-            Destroy(gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 

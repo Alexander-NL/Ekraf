@@ -30,6 +30,7 @@ public class PlayerMiscScript : MonoBehaviour
 
         if (paused)
         {
+            Debug.Log("Paused");
             BGMmanager.Instance.PlayerSfxAudio.Pause();
             Cursor.visible = true;
             pauseObject.SetActive(true);
@@ -37,10 +38,11 @@ public class PlayerMiscScript : MonoBehaviour
         }
         else if (!paused)
         {
+            Debug.Log("Unpaused");
             BGMmanager.Instance.PlayerSfxAudio.UnPause();
             Cursor.visible = false;
             pauseObject.SetActive(false);
-            Time.timeScale = 1f;
+            Time.timeScale = 1.0f;
         }
     }
 }
