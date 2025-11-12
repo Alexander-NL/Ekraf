@@ -11,8 +11,9 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] CanvasGroup[] CutsceneList;
     [SerializeField] CanvasGroup fadeImage;
     [SerializeField] bool isComic;
-    public int temp;
+    public int temp = 0;
     public float fadeDuration = 1f;
+    public GameObject mouse;
 
     [Header("Input Action Reference")]
     public InputActionReference NextAction;
@@ -32,7 +33,7 @@ public class CutsceneManager : MonoBehaviour
     private void Start()
     {
         //  ...
-        StartCutscene();  
+        //StartCutscene();  
     }
 
     public void StartCutscene()
@@ -45,10 +46,24 @@ public class CutsceneManager : MonoBehaviour
         StartCoroutine(FadeOutTransition(fadeImage));
 
         StartCoroutine(FadeInTransition(CutsceneList[0]));
+        mouse.SetActive(true);
     }
 
     private void NextPart(InputAction.CallbackContext context)
     {
+        if(temp == 0)
+        {
+            Time.timeScale = 0f;
+            foreach (var cutscene in CutsceneList)
+            {
+                cutscene.alpha = 0f;
+            }
+            StartCoroutine(FadeOutTransition(fadeImage));
+
+            StartCoroutine(FadeInTransition(CutsceneList[0]));
+            mouse.SetActive(true);
+        }
+        mouse.SetActive(false);
         temp++;
         UpdateCutscene(temp);
     }
@@ -63,9 +78,14 @@ public class CutsceneManager : MonoBehaviour
                 StartCoroutine(FadeOutTransition(CutsceneList[temp - 1]));
                 SceneManager.LoadScene("MainMenu");
             }
-            StartCoroutine(FadeInTransition(fadeImage));
-            Time.timeScale = 1f;
-            this.gameObject.SetActive(false);
+            else
+            {
+                StartCoroutine(FadeOutTransition(fadeImage));
+                Time.timeScale = 1f;
+                this.gameObject.SetActive(false);
+
+            }
+
         }
         else
         {
