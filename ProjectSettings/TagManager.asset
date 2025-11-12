@@ -45,8 +45,14 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 1606956013
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Grassing
+    uniqueID: 1317576287
     locked: 0
   m_RenderingLayers:
   - Default
