@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.ParticleSystem;
 
 public class PlayerAttackHero : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class PlayerAttackHero : MonoBehaviour
 
     public float parryCooldown = 1.5f;
     public bool canParry;
+
+    public GameObject particle;
 
     public PlayerMiscScript playerMiscScript;
     public CinemachineImpulseSource impulseSource;
@@ -77,6 +80,8 @@ public class PlayerAttackHero : MonoBehaviour
 
                 Weapon.SetActive(true); 
                 AB.Parry();
+
+                StartCoroutine(Particle());
                 WeaponControl.SetTrigger("Parry");
                 impulseSource.GenerateImpulse();
                 BGMmanager.Instance.PlayerSlap("Parry");
@@ -115,6 +120,13 @@ public class PlayerAttackHero : MonoBehaviour
                 return;
             }
         }
+    }
+
+    IEnumerator Particle()
+    {
+        particle.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        particle.SetActive(false);
     }
 
     IEnumerator SlapImpactFrames()

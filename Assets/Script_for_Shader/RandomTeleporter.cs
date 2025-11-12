@@ -25,15 +25,6 @@ public class RandomTeleporter : MonoBehaviour
         originalPosition = transform.position;
     }
 
-    // Gunakan ini untuk testing (tekan 'T' untuk memulai)
-    // Untuk Versi sebenarnya akan dijalankan ketika boss mati (sekaligus trigger vfx)
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            StartTeleportEffect();
-        }
-    }
 
     //Public function buat dipanggil di script lain
     public void StartTeleportEffect()

@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class HeroRespawn : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class HeroRespawn : MonoBehaviour
     public HeroAnim heroAnim;
     public PlayerAnim playerAnim;
     public TurretManager turretManager;
+    public VFx_DamageFlash vfxdamage;
+    public GameObject particle;
 
     public void Start()
     {
@@ -35,7 +38,12 @@ public class HeroRespawn : MonoBehaviour
         {
             Debug.Log("Dead");
             DeadCounter++;
-            turretManager.RefreshTurret();
+
+            vfxdamage.CallDamageFlash();
+            if (turretManager != null)
+            {
+                turretManager.RefreshTurret();
+            }
 
             deadText.text = DeadCounter.ToString();
             StartCoroutine(Respawn());
@@ -64,7 +72,10 @@ public class HeroRespawn : MonoBehaviour
         BGMmanager.Instance.PlayerSfxSet("Dead");
         heroAnim.DeadTrigger();
 
+        particle.SetActive(true);
         yield return new WaitForSeconds(respawnTimer);
+        particle.SetActive(false);
+
         Dead = false;
         box2D.enabled = true;
 

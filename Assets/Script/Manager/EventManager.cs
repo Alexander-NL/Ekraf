@@ -7,18 +7,17 @@ public class EventManager : MonoBehaviour
     [Header("Reference")]
     public HeroRespawn heroRespawn;
     public SceneChange sceneChange;
+    public CutsceneManager cutscene;
+    public GameObject cutsceneCanvas;
+    public ShowDeath show;
 
     [Header("Events")]
-    public UnityEvent BossBattle;
-    public UnityEvent CutsceneStart;
-    public UnityEvent CutsceneEnd;
-    public UnityEvent GameplayStart;
-    public UnityEvent GameplayEnd;
+    public UnityEvent BossDone;
     public UnityEvent NextLevel;
 
     public void Start()
     {
-        InitializeBossBattle();
+        InitializeBossDone();
         InitializeNextLevel();
     }
 
@@ -27,9 +26,18 @@ public class EventManager : MonoBehaviour
         
     }
 
-    private void InitializeBossBattle()
+    private void InitializeBossDone()
     {
-        BossBattle.AddListener(BGMmanager.Instance.ChangeToBossBgm);
+        SaveSystem.Instance.NextScene(heroRespawn.DeadCounter);
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (currentScene.name == "BossRoom")
+        {
+            BossDone.AddListener(BGMmanager.Instance.BossBattleDone);
+            BossDone.AddListener(Done);
+            BossDone.AddListener(cutscene.StartCutscene);
+            BossDone.AddListener(show.UpdateText);
+        }
     }
 
     public void InvokeNextLevel()
@@ -53,8 +61,9 @@ public class EventManager : MonoBehaviour
         NextLevel.Invoke();
     }
 
-    void Update()
+    public void Done()
     {
-        
+        SaveSystem.Instance.CheckAndSaveDeathTotal(SaveSystem.Instance.Death);
+        cutsceneCanvas.SetActive(true);
     }
 }

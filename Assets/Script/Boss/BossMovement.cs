@@ -5,9 +5,11 @@ public class BossMovement : MonoBehaviour
 {
     public float deathAnimDelay = 5f;
     public bool isDead;
+    public GameObject particle;
 
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 3f;
+    public EventManager eventmanager;
     public Transform Left;
     public Transform Right;
 
@@ -34,8 +36,14 @@ public class BossMovement : MonoBehaviour
 
     IEnumerator bossDeadAnimation()
     {
+        particle.SetActive(true);
         isDead = true;
+
         yield return new WaitForSeconds(deathAnimDelay);
+
+        particle.SetActive(false);
+
+        eventmanager.BossDone.Invoke();
         Destroy(gameObject);
     }
 }

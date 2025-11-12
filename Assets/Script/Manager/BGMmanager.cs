@@ -22,6 +22,7 @@ public class BGMmanager : MonoBehaviour
     public AudioClip BossBgm;
     public AudioClip MainMenuBgm;
     public AudioClip GameplayBgm;
+    public AudioClip Ambience;
 
     [Header("UI related")]
     public AudioClip ClickSound;
@@ -146,8 +147,8 @@ public class BGMmanager : MonoBehaviour
 
     IEnumerator BossExplosionDelay()
     {
-        EnemySFX.clip = Explosion;
-        EnemySFX.Play();
+        SfxAudioExtra.clip = Explosion;
+        SfxAudioExtra.Play();
 
         yield return new WaitForSeconds(Explosion.length);
 
@@ -226,17 +227,29 @@ public class BGMmanager : MonoBehaviour
     }
 
 
-    public void BossBattleBGM()
+    public void BossBattleDone()
     {
-        BgmAudio.resource = BossBgm;
+        BgmAudio.resource = Ambience;
+        PlayerSfxAudio.Pause();
         BgmAudio.Play();
     }
 
+
     void OnSceneLoaded(Scene oldScene, Scene newScene)
     {
-        if (newScene.name == "Alex - Menu Test")
+        if (newScene.name == "Tutorial")
+        {
+            BgmAudio.resource = Ambience;
+            BgmAudio.Play();
+        }
+        else if(newScene.name == "MainMenu")
         {
             BgmAudio.resource = MainMenuBgm;
+            BgmAudio.Play();
+        }
+        else if(newScene.name == "BossRoom")
+        {
+            BgmAudio.resource = BossBgm;
             BgmAudio.Play();
         }
         else

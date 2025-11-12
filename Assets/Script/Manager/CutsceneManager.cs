@@ -32,8 +32,6 @@ public class CutsceneManager : MonoBehaviour
 
     private void Start()
     {
-        //  ...
-        //StartCutscene();  
     }
 
     public void StartCutscene()
@@ -77,13 +75,14 @@ public class CutsceneManager : MonoBehaviour
             {
                 StartCoroutine(FadeOutTransition(CutsceneList[temp - 1]));
                 SceneManager.LoadScene("MainMenu");
+                BGMmanager.Instance.ChangeToMenuBgm();
             }
             else
             {
                 StartCoroutine(FadeOutTransition(fadeImage));
                 Time.timeScale = 1f;
                 this.gameObject.SetActive(false);
-
+                BGMmanager.Instance.ChangeToGameplayBgm();
             }
 
         }

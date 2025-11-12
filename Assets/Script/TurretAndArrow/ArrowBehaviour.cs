@@ -24,7 +24,7 @@ public class ArrowBehaviour : MonoBehaviour
 
         // set arrow rotation to face the hero
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+        transform.rotation = Quaternion.Euler(0f, 0f, angle + 180);
 
         // set velocity toward the hero
         rb.linearVelocity = dir * speed;
@@ -45,7 +45,7 @@ public class ArrowBehaviour : MonoBehaviour
         if (rb.linearVelocity.sqrMagnitude > 0.001f)
         {
             float angle = Mathf.Atan2(rb.linearVelocity.y, rb.linearVelocity.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            transform.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
     }
 

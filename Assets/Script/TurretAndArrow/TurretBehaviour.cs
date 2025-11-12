@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class TurretBehaviour : MonoBehaviour
@@ -15,9 +16,12 @@ public class TurretBehaviour : MonoBehaviour
     public int turretHP = 1;
     public float cooldown;
 
+    public GameObject prefab;
+
 
     void Start()
     {
+        prefab.SetActive(false);
         //var heroBody = GameObject.FindWithTag("Hero")?.transform;
 
     }
@@ -69,6 +73,7 @@ public class TurretBehaviour : MonoBehaviour
 
         if (turretHP <= 0)
         {
+            prefab.SetActive(true);
             BGMmanager.Instance.TurretDead();
             this.gameObject.SetActive(false);
         }

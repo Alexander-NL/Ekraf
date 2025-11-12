@@ -9,13 +9,19 @@ public class MainButton : MonoBehaviour
     {
         // click sfx
         // change to gameplay bgm
-        SceneManager.LoadScene("GamePlay");
+        SceneManager.LoadScene("Tutorial");
     }
 
     public void OptionsButtonClick()
     {
         BGMmanager.Instance.SfxOnclick();
         optionsCanvas.SetActive(true);
+    }
+
+    public void ButtonBack()
+    {
+        BGMmanager.Instance.SfxOnclick();
+        optionsCanvas.SetActive(false);
     }
 
     public void QuitButtonClick()

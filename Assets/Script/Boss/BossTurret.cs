@@ -14,6 +14,10 @@ public class BossTurret : MonoBehaviour
     public Animator bossAnimator;
 
     public BossMovement bossMovement;
+    public VFx_DamageFlash vfx;
+
+    public RandomTeleporter[] randoms;
+
     public float detectRange = 10f;
     public float shootCooldown = 1.5f;
     public int maxHP = 5;
@@ -61,11 +65,17 @@ public class BossTurret : MonoBehaviour
     {
         Debug.Log("Turret get hit");
         turretHP -= dmg;
+        vfx.CallDamageFlash();
 
         if (turretHP <= 0)
         {
             bossMovement.BossDead();
             bossAnimator.SetTrigger("Dead");
+
+            foreach (var random in randoms)
+            {
+                random.StartTeleportEffect();
+            }
 
             foreach (var item in Turrets)
             {
