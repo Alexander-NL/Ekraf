@@ -28,6 +28,7 @@ public class BossMovement : MonoBehaviour
 
     public void BossDead()
     {
+        BGMmanager.Instance.BossExplosion();
         StartCoroutine(bossDeadAnimation());
     }
 

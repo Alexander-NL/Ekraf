@@ -52,6 +52,8 @@ public class TurretBehaviour : MonoBehaviour
     {
         if (arrowPrefab == null || arrowSpawnPoint == null) return;
 
+        BGMmanager.Instance.ArrowShoot();
+
         arrowSpawn = Instantiate(arrowPrefab, arrowSpawnPoint.position, arrowSpawnPoint.rotation);
         arrowScript = arrowSpawn.GetComponent<ArrowBehaviour>();
         if (arrowScript != null)
@@ -67,6 +69,7 @@ public class TurretBehaviour : MonoBehaviour
 
         if (turretHP <= 0)
         {
+            BGMmanager.Instance.TurretDead();
             Destroy(gameObject);
         }
     }

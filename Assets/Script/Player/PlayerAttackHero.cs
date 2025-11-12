@@ -1,8 +1,6 @@
 using System.Collections;
-using Unity.Burst.CompilerServices;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerAttackHero : MonoBehaviour

@@ -15,6 +15,7 @@ public class BGMmanager : MonoBehaviour
 
     public AudioSource PlayerSfxAudio;
     public AudioSource EnemySFX;
+    public AudioSource EnemySFXShoot;
 
     [Header("BGM related")]
     public float transitionTime;
@@ -31,6 +32,15 @@ public class BGMmanager : MonoBehaviour
     public AudioClip HeroRun;
     public AudioClip HeroSlapped;
     public AudioClip HeroJump;
+
+    [Header("Turret")]
+    public AudioClip Shoot;
+    public AudioClip HitWall;
+    public AudioClip TurretExplosion;
+
+    [Header("Boss")]
+    public AudioClip Explosion;
+    public AudioClip FinalExplosion;
 
     [Header("Player related")]
     public AudioClip parry;
@@ -72,6 +82,7 @@ public class BGMmanager : MonoBehaviour
         SfxAudio.volume = SfxVolume;
         PlayerSfxAudio.volume = SfxVolume;
         SfxAudioExtra.volume = SfxVolume;
+        EnemySFXShoot.volume = SfxVolume;
     }
 
     public void SfxOnclick()
@@ -113,6 +124,40 @@ public class BGMmanager : MonoBehaviour
     public void ChangeToMenuBgm()
     {
         StartCoroutine(MixSources(MainMenuBgm));
+    }
+
+    public void ArrowHitWall()
+    {
+        EnemySFX.clip = HitWall;
+        EnemySFX.Play();
+    }
+
+    public void ArrowShoot()
+    {
+        EnemySFXShoot.clip = Shoot;
+        EnemySFXShoot.Play();
+    }
+
+    public void BossExplosion()
+    {
+        StartCoroutine(BossExplosionDelay());
+    }
+
+    IEnumerator BossExplosionDelay()
+    {
+        EnemySFX.clip = Explosion;
+        EnemySFX.Play();
+
+        yield return new WaitForSeconds(Explosion.length);
+
+        EnemySFX.clip = FinalExplosion;
+        EnemySFX.Play();
+    }
+
+    public void TurretDead()
+    {
+        EnemySFX.clip = TurretExplosion;
+        EnemySFX.Play();
     }
 
     /// <summary>

@@ -10,6 +10,9 @@ public class BossTurret : MonoBehaviour
     public GameObject arrowSpawn;
 
     [Header("Turret related")]
+    public GameObject[] Turrets;
+    public Animator bossAnimator;
+
     public BossMovement bossMovement;
     public float detectRange = 10f;
     public float shootCooldown = 1.5f;
@@ -39,6 +42,8 @@ public class BossTurret : MonoBehaviour
     {
         if (arrowPrefab == null || arrowSpawnPoint == null) return;
 
+        BGMmanager.Instance.ArrowShoot();
+
         Vector3 startPos = arrowSpawnPoint.position;
         Vector3 endPos = startPos + Vector3.down * shootDistance;
 
@@ -60,6 +65,12 @@ public class BossTurret : MonoBehaviour
         if (turretHP <= 0)
         {
             bossMovement.BossDead();
+            bossAnimator.SetTrigger("Dead");
+
+            foreach (var item in Turrets)
+            {
+                item.SetActive(false);
+            }
         }
     }
 

@@ -59,6 +59,7 @@ public class ArrowBehaviour : MonoBehaviour
             }
             else if (collision.collider.CompareTag("Wall") || collision.collider.CompareTag("Ground"))
             {
+                BGMmanager.Instance.ArrowHitWall();
                 Destroy(gameObject);
             }
         }

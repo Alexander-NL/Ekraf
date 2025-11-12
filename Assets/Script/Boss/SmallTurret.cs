@@ -34,6 +34,8 @@ public class SmallTurret : MonoBehaviour
     {
         if (arrowPrefab == null || arrowSpawnPoint == null) return;
 
+        BGMmanager.Instance.ArrowShoot();
+
         Vector3 startPos = arrowSpawnPoint.position;
         Vector3 endPos = startPos + Vector3.down * shootDistance;
 
