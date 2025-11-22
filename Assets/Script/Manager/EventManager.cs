@@ -54,6 +54,12 @@ public class EventManager : MonoBehaviour
                 sceneChange.ChangeSceneWithFade("Chamber2");
                 break;
             case "Chamber2":
+                sceneChange.ChangeSceneWithFade("Chamber3");
+                break;
+            case "Chamber3":
+                sceneChange.ChangeSceneWithFade("Chamber4");
+                break;
+            case "Chamber4":
                 sceneChange.ChangeSceneWithFade("BossRoom");
                 break;
         }

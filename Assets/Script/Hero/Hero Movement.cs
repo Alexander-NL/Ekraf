@@ -151,10 +151,18 @@ public class HeroMovement : MonoBehaviour
         Debug.DrawRay(topRayOriginRight, Vector2.up * topRayDistance, topHitRight.collider ? Color.red : topRayColor);
 
         //Atap
-        if ((topHitLeft.collider != null && 
-            (topHitLeft.collider.gameObject.tag == "Ground" || topHitLeft.collider.gameObject.tag == "Wall" || topHitLeft.collider.gameObject.tag == "Spike")) 
+        if(topHitLeft.collider != null)
+        {
+            Debug.Log("Top Left null");
+        }
+        else if(topHitRight.collider != null)
+        {
+            Debug.Log("Top Right null");
+        }
+        if ((topHitLeft.collider != null &&
+            (topHitLeft.collider.gameObject.tag == "Ground" || topHitLeft.collider.gameObject.tag == "Wall" || topHitLeft.collider.gameObject.tag == "Spike"))
             ||
-            (topHitRight.collider != null && 
+            (topHitRight.collider != null &&
             (topHitRight.collider.gameObject.tag == "Ground" || topHitLeft.collider.gameObject.tag == "Wall" || topHitLeft.collider.gameObject.tag == "Spike")))
         {
             hitCeiling = true;

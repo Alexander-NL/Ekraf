@@ -36,18 +36,23 @@ public class HeroRespawn : MonoBehaviour
     {
         if (collision.collider.CompareTag("Arrow") || collision.collider.CompareTag("Spike"))
         {
-            Debug.Log("Dead");
-            DeadCounter++;
-
-            vfxdamage.CallDamageFlash();
-            if (turretManager != null)
-            {
-                turretManager.RefreshTurret();
-            }
-
-            deadText.text = DeadCounter.ToString();
-            StartCoroutine(Respawn());
+            HeroDeath();
         }
+    }
+
+    public void HeroDeath()
+    {
+        Debug.Log("Dead");
+        DeadCounter++;
+
+        vfxdamage.CallDamageFlash();
+        if (turretManager != null)
+        {
+            turretManager.RefreshTurret();
+        }
+
+        deadText.text = DeadCounter.ToString();
+        StartCoroutine(Respawn());
     }
 
     public void Retry()
@@ -82,4 +87,6 @@ public class HeroRespawn : MonoBehaviour
         heroMovement.CurrentState = earlyMovementState;
         this.transform.position = respawnLocation.transform.position;
     }
+
+
 }

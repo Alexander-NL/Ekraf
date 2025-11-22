@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    [Header("Sprites")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite normalSprite;
+    [SerializeField] private Sprite fallingSprite;
+    [SerializeField] private Sprite impactSprite;
+
     [Header("Door Settings")]
     public bool isTrap;
 
@@ -16,7 +22,7 @@ public class Door : MonoBehaviour
     [SerializeField] private BoxCollider2D boxCollider;
     public CinemachineImpulseSource impulseSource;
     [SerializeField] float goUpDelay = 0.5f;
-    [SerializeField] float delayBeforeSlam = 1f;
+    [SerializeField] float delayBeforeSlam = 1.5f;
 
     [SerializeField] Vector3 originalPosition;
     [SerializeField] Vector3 slamTargetPosition;
@@ -27,6 +33,11 @@ public class Door : MonoBehaviour
     {
         if (boxCollider == null)
             boxCollider = GetComponent<BoxCollider2D>();
+
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+
+        spriteRenderer.sprite = normalSprite;
 
         originalPosition = transform.position;
         slamTargetPosition = originalPosition + Vector3.down * slamDistance;
@@ -51,6 +62,7 @@ public class Door : MonoBehaviour
 
     public void StartSlamming()
     {
+        spriteRenderer.sprite = fallingSprite;
         isSlammingDown = true;
         isReturningUp = false;
     }
@@ -77,6 +89,7 @@ public class Door : MonoBehaviour
 
     private void OnHitGround()
     {
+        spriteRenderer.sprite = impactSprite;
         isSlammingDown = false;
         Debug.Log("Hit ground! Returning up slowly...");
 
@@ -88,6 +101,7 @@ public class Door : MonoBehaviour
     IEnumerator DelayGoUp()
     {
         yield return new WaitForSeconds(goUpDelay);
+        spriteRenderer.sprite = normalSprite;
         isReturningUp = true;
     }
 
@@ -117,4 +131,45 @@ public class Door : MonoBehaviour
             Gizmos.DrawLine(transform.position, transform.position + Vector3.down * slamDistance);
         }
     }
+    private bool IsBottomSideCollision(Collision2D collision)
+    {
+        // Get contact point
+        ContactPoint2D contact = collision.GetContact(0);
+
+        // Get door bounds
+        Bounds bounds = boxCollider.bounds;
+
+        // Threshold tolerance (makes it easier to trigger)
+        float tolerance = 0.05f;
+
+        // Check if the contact point is near the bottom edge of the door
+        bool bottomHit = contact.point.y <= bounds.min.y + tolerance;
+
+        return bottomHit;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!collision.collider.CompareTag("Hero")) return;
+
+        if (!isSlammingDown) return;
+
+        // Check if the bottom side is what hit the hero
+        if (IsBottomSideCollision(collision))
+        {
+            // KILL HERO HERE
+            HeroRespawn heroRespawn = collision.collider.GetComponent<HeroRespawn>();
+            if (heroRespawn != null)
+            {
+                heroRespawn.HeroDeath();
+            }
+
+            Debug.Log("HERO CRUSHED BY DOOR!");
+        }
+        else
+        {
+            Debug.Log("Side collision (ignored).");
+        }
+    }
+
 }
