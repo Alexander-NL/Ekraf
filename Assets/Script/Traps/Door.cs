@@ -9,6 +9,7 @@ public class Door : MonoBehaviour
     [SerializeField] private Sprite normalSprite;
     [SerializeField] private Sprite fallingSprite;
     [SerializeField] private Sprite impactSprite;
+    [SerializeField] private ParticleSystem dustVFX;
 
     [Header("Door Settings")]
     public bool isTrap;
@@ -73,6 +74,8 @@ public class Door : MonoBehaviour
 
         if (transform.position == slamTargetPosition)
         {
+            if (dustVFX != null)
+                dustVFX.Play();
             OnHitGround();
         }
     }
