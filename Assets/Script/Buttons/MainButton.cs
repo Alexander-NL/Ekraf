@@ -5,6 +5,11 @@ using UnityEngine.UI;
 public class MainButton : MonoBehaviour
 {
     [SerializeField] GameObject optionsCanvas;
+
+    public void Start()
+    {
+        Cursor.visible = true;
+    }
     public void PlayButtonClick()
     {
         // click sfx

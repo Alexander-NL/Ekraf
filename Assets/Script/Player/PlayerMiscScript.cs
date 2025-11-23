@@ -11,6 +11,12 @@ public class PlayerMiscScript : MonoBehaviour
     public bool paused;
     public bool isOption;
 
+    //private void Update()
+    //{
+    //    if (Keyboard.current.escapeKey.wasPressedThisFrame)
+    //        Debug.Log("ESC detected");
+    //}
+
     private void OnEnable()
     {
         pauseAction.action.Enable();

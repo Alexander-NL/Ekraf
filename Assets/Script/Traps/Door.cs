@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -131,33 +131,17 @@ public class Door : MonoBehaviour
             Gizmos.DrawLine(transform.position, transform.position + Vector3.down * slamDistance);
         }
     }
-    private bool IsBottomSideCollision(Collision2D collision)
-    {
-        // Get contact point
-        ContactPoint2D contact = collision.GetContact(0);
-
-        // Get door bounds
-        Bounds bounds = boxCollider.bounds;
-
-        // Threshold tolerance (makes it easier to trigger)
-        float tolerance = 0.05f;
-
-        // Check if the contact point is near the bottom edge of the door
-        bool bottomHit = contact.point.y <= bounds.min.y + tolerance;
-
-        return bottomHit;
-    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!collision.collider.CompareTag("Hero")) return;
-
         if (!isSlammingDown) return;
 
-        // Check if the bottom side is what hit the hero
-        if (IsBottomSideCollision(collision))
+        // check if door hits player from above
+        ContactPoint2D contact = collision.GetContact(0);
+
+        if (contact.normal.y > 0.5f)
         {
-            // KILL HERO HERE
             HeroRespawn heroRespawn = collision.collider.GetComponent<HeroRespawn>();
             if (heroRespawn != null)
             {
@@ -171,5 +155,6 @@ public class Door : MonoBehaviour
             Debug.Log("Side collision (ignored).");
         }
     }
+
 
 }

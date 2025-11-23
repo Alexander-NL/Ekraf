@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PauseButton : MonoBehaviour
 {
@@ -9,13 +10,6 @@ public class PauseButton : MonoBehaviour
     {
         pauseCanvas.SetActive(false);
         Time.timeScale = 1f;
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            pauseButtonClick(); 
-        }
     }
 
     public void pauseButtonClick()
