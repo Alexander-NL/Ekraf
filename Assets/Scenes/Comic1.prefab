@@ -312,6 +312,7 @@ MonoBehaviour:
   isComic: 1
   temp: 0
   fadeDuration: 2
+  mouse: {fileID: 0}
   NextAction: {fileID: -6457009942729595337, guid: c88b2afe3fa982e44ad93f6d0081b4fa, type: 3}
 --- !u!1 &7730280967991201300
 GameObject:
