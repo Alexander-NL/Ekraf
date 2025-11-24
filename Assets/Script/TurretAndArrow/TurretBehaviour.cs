@@ -1,29 +1,34 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TurretBehaviour : MonoBehaviour
 {
+    [Header("Arrow Related")]
     [SerializeField] Transform arrowSpawnPoint;
     [SerializeField] GameObject arrowPrefab;
-
     [SerializeField] Transform hero;
     public ArrowBehaviour arrowScript;
     public GameObject arrowSpawn;
 
+    [Header("Turret Stats")]
     public float detectRange = 10f;
     public float shootCooldown = 1.5f;
     public float aimSpeed = 8f;
     public int turretHP = 1;
-    public float cooldown;
+    private float cooldown;
+    public bool isDead;
 
-    public GameObject prefab;
+    [Header("Vfx Related")]
+    public GameObject vfxPrefab;
+    public Transform vfxSpawnLocation;
 
+    private GameObject _vfxPrefab;
 
-    void Start()
+    private void Start()
     {
-        prefab.SetActive(false);
-        //var heroBody = GameObject.FindWithTag("Hero")?.transform;
-
+        TurretManager.Instance.turretList.Add(this);
+        GameObject temp = GameObject.FindWithTag("Hero");
+        hero = temp.transform;
     }
 
     void Update()
@@ -60,6 +65,10 @@ public class TurretBehaviour : MonoBehaviour
 
         arrowSpawn = Instantiate(arrowPrefab, arrowSpawnPoint.position, arrowSpawnPoint.rotation);
         arrowScript = arrowSpawn.GetComponent<ArrowBehaviour>();
+        arrowScript.turretBehaviour = this;
+
+        TurretManager.Instance.arrowStash.Add(arrowSpawn);
+
         if (arrowScript != null)
         {
             arrowScript.Initialize(transform, hero.transform);
@@ -73,7 +82,10 @@ public class TurretBehaviour : MonoBehaviour
 
         if (turretHP <= 0)
         {
-            prefab.SetActive(true);
+            _vfxPrefab = Instantiate(vfxPrefab, vfxSpawnLocation);
+            _vfxPrefab.transform.position = this.transform.position;
+
+            isDead = true;
             BGMmanager.Instance.TurretDead();
             this.gameObject.SetActive(false);
         }

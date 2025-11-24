@@ -43,6 +43,8 @@ public class SmallTurret : MonoBehaviour
 
         arrowSpawn = Instantiate(arrowPrefab, arrowSpawnPoint.position, downwardRotation);
         arrowScript = arrowSpawn.GetComponent<ArrowBehaviour>();
+
+
         if (arrowScript != null)
         {
             arrowScript.Initialize(arrowSpawnPoint, arrowEndPoint);

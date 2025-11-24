@@ -2,7 +2,6 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.ParticleSystem;
 
 public class PlayerAttackHero : MonoBehaviour
 {
@@ -22,7 +21,9 @@ public class PlayerAttackHero : MonoBehaviour
     public float parryCooldown = 1.5f;
     public bool canParry;
 
-    public GameObject particle;
+    public GameObject particlePrefab;
+    public Transform bird;
+    private GameObject _currentParticle;
 
     public PlayerMiscScript playerMiscScript;
     public CinemachineImpulseSource impulseSource;
@@ -32,6 +33,8 @@ public class PlayerAttackHero : MonoBehaviour
 
     private HeroSlapDetect HSD;
     private ArrowBehaviour AB;
+
+    private Coroutine _currentIEParticle;
 
     private void OnEnable()
     {
@@ -81,7 +84,12 @@ public class PlayerAttackHero : MonoBehaviour
                 Weapon.SetActive(true); 
                 AB.Parry();
 
-                StartCoroutine(Particle());
+                if(_currentIEParticle != null)
+                {
+                    StopCoroutine(_currentIEParticle);
+                }
+
+                _currentIEParticle = StartCoroutine(Particle());
                 WeaponControl.SetTrigger("Parry");
                 impulseSource.GenerateImpulse();
                 BGMmanager.Instance.PlayerSlap("Parry");
@@ -124,9 +132,16 @@ public class PlayerAttackHero : MonoBehaviour
 
     IEnumerator Particle()
     {
-        particle.SetActive(true);
+        if(_currentParticle != null)
+        {
+            Destroy(_currentParticle);
+        }
+
+        _currentParticle = Instantiate(particlePrefab, bird);
+
+        _currentParticle.transform.localPosition = new Vector2(0, 0);
         yield return new WaitForSeconds(1.5f);
-        particle.SetActive(false);
+        Destroy(_currentParticle);
     }
 
     IEnumerator SlapImpactFrames()

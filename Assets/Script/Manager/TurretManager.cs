@@ -1,9 +1,27 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TurretManager : MonoBehaviour
 {
-    public GameObject[] TurretHead;
+    public static TurretManager Instance { get; private set; }
+
+
+    public List<TurretBehaviour> turretList;
+    public List<GameObject> arrowStash;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
 
     public void RefreshTurret()
     {
@@ -14,9 +32,16 @@ public class TurretManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
-        foreach (var t in TurretHead)
+        foreach (var t in turretList)
         {
-            t.SetActive(true);
+            t.gameObject.SetActive(true);
+            t.isDead = false;
         }
+
+        foreach (var t in arrowStash)
+        {
+            Destroy (t.gameObject);
+        }
+        arrowStash.Clear();
     }
 }
