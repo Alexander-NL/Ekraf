@@ -110,7 +110,7 @@ public class PlayerAttackHero : MonoBehaviour
 
         foreach (RaycastHit2D hit in hits)
         {
-            if (hit.collider is CapsuleCollider2D && !canSlap && hit.collider.tag == "Hero")
+            if (hit.collider is BoxCollider2D && !canSlap && hit.collider.tag == "Hero")
             {
                 HSD = hit.collider.gameObject.GetComponent<HeroSlapDetect>();
 

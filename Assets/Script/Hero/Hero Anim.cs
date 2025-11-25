@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HeroAnim : MonoBehaviour
@@ -48,7 +49,14 @@ public class HeroAnim : MonoBehaviour
     {
         heroAnimator.SetBool("Walking", false);
         heroAnimator.SetBool("Running", false);
+        StartCoroutine(jumpReturntoWalk());
+    }
+    
+    IEnumerator jumpReturntoWalk()
+    {
         heroAnimator.SetTrigger("Jump");
+        yield return new WaitForSeconds(1);
+        WalkTrigger();
     }
 
     public void IdleTrigger()
