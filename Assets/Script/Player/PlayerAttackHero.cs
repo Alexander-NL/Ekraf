@@ -12,13 +12,14 @@ public class PlayerAttackHero : MonoBehaviour
     [Header("Spirit related")]
     public GameObject Bird;
     public GameObject Weapon;
+    public SpriteRenderer birdSpriteRenderer;
     public Animator WeaponControl;
 
     [Header("Slap Related")]
     public float slapCooldown = 1.5f;
     public bool canSlap;
 
-    public float parryCooldown = 1.5f;
+    public float parryCooldown = 0.5f;
     public bool canParry;
 
     public GameObject particlePrefab;
@@ -55,6 +56,8 @@ public class PlayerAttackHero : MonoBehaviour
     private void Start()
     {
         Cursor.visible = false;
+        canSlap = true;
+        canParry = true;
         Weapon.SetActive(false);
     }
 
@@ -77,7 +80,7 @@ public class PlayerAttackHero : MonoBehaviour
         foreach (RaycastHit2D hit in hits)
         {
             //Check for Arrow
-            if (hit.collider.tag == "Arrow" && !canSlap)
+            if (hit.collider.tag == "Arrow" && canParry)
             {
                 AB = hit.collider.GetComponent<ArrowBehaviour>();
 
@@ -110,7 +113,7 @@ public class PlayerAttackHero : MonoBehaviour
 
         foreach (RaycastHit2D hit in hits)
         {
-            if (hit.collider is BoxCollider2D && !canSlap && hit.collider.tag == "Hero")
+            if (hit.collider is BoxCollider2D && canSlap && hit.collider.tag == "Hero")
             {
                 HSD = hit.collider.gameObject.GetComponent<HeroSlapDetect>();
 
@@ -177,15 +180,28 @@ public class PlayerAttackHero : MonoBehaviour
 
     IEnumerator Parrycooldown()
     {
-        canParry = true;
-        yield return new WaitForSecondsRealtime(parryCooldown);
         canParry = false;
+        yield return new WaitForSecondsRealtime(parryCooldown);
+        canParry = true;
     }
 
     IEnumerator Slapcooldown()
     {
-        canSlap = true;
-        yield return new WaitForSecondsRealtime(slapCooldown);
         canSlap = false;
+        birdSpriteRenderer.material.SetFloat("_GrayscaleAmount", 1f);
+
+        float time = 0;
+        while (time < slapCooldown)
+        {
+            float ratio = time / slapCooldown;
+            float grayscale = 1f - ratio;
+            birdSpriteRenderer.material.SetFloat("_GrayscaleAmount", grayscale);
+
+            time += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        birdSpriteRenderer.material.SetFloat("_GrayscaleAmount", 0f);
+        canSlap = true;
     }
 }

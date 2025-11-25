@@ -25,13 +25,6 @@ public class TurretManager : MonoBehaviour
 
     public void RefreshTurret()
     {
-        StartCoroutine(refreshDelay());
-    }
-
-    IEnumerator refreshDelay()
-    {
-        yield return new WaitForSeconds(2f);
-
         foreach (var t in turretList)
         {
             t.gameObject.SetActive(true);
@@ -40,7 +33,7 @@ public class TurretManager : MonoBehaviour
 
         foreach (var t in arrowStash)
         {
-            Destroy (t.gameObject);
+            Destroy(t.gameObject);
         }
         arrowStash.Clear();
     }

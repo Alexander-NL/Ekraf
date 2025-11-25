@@ -18694,10 +18694,11 @@ MonoBehaviour:
   slapAction: {fileID: 8377599560880729027, guid: c88b2afe3fa982e44ad93f6d0081b4fa, type: 3}
   Bird: {fileID: 1768497700}
   Weapon: {fileID: 1064723917}
+  birdSpriteRenderer: {fileID: 1768497701}
   WeaponControl: {fileID: 1064723918}
   slapCooldown: 1.5
   canSlap: 0
-  parryCooldown: 1
+  parryCooldown: 0.5
   canParry: 0
   particlePrefab: {fileID: 5205182275342978826, guid: 6551d487fa80f8e489a0c1c9607f6e75, type: 3}
   bird: {fileID: 1768497703}
@@ -25793,7 +25794,7 @@ MonoBehaviour:
     parallaxMultiplier: 0.03
     infiniteHorizontal: 1
     infiniteVertical: 0
-  cameraTransform: {fileID: 0}
+  cameraTransform: {fileID: 146111965}
 --- !u!1 &486523702
 GameObject:
   m_ObjectHideFlags: 0

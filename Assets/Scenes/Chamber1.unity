@@ -4373,7 +4373,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: f3e73deba9f35154e9a082291540be2c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11919,10 +11919,11 @@ MonoBehaviour:
   slapAction: {fileID: 8377599560880729027, guid: c88b2afe3fa982e44ad93f6d0081b4fa, type: 3}
   Bird: {fileID: 790696811}
   Weapon: {fileID: 64381457}
+  birdSpriteRenderer: {fileID: 790696813}
   WeaponControl: {fileID: 64381458}
   slapCooldown: 1.5
   canSlap: 0
-  parryCooldown: 1
+  parryCooldown: 0.5
   canParry: 0
   particlePrefab: {fileID: 5205182275342978826, guid: 6551d487fa80f8e489a0c1c9607f6e75, type: 3}
   bird: {fileID: 790696814}

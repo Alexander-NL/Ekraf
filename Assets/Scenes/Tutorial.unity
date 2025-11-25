@@ -31181,10 +31181,11 @@ MonoBehaviour:
   slapAction: {fileID: 8377599560880729027, guid: c88b2afe3fa982e44ad93f6d0081b4fa, type: 3}
   Bird: {fileID: 937407376}
   Weapon: {fileID: 1254762233}
+  birdSpriteRenderer: {fileID: 937407377}
   WeaponControl: {fileID: 1254762235}
   slapCooldown: 1.5
   canSlap: 0
-  parryCooldown: 1
+  parryCooldown: 0.5
   canParry: 0
   particlePrefab: {fileID: 5205182275342978826, guid: 6551d487fa80f8e489a0c1c9607f6e75, type: 3}
   bird: {fileID: 937407379}
