@@ -58,7 +58,7 @@ public class HeroRespawn : MonoBehaviour
 
     public void Retry()
     {
-        DeadCounter = 0;
+        DeadCounter++;
         deadText.text = DeadCounter.ToString();
         heroMovement.CurrentState = earlyMovementState;
         this.transform.position = respawnLocation.transform.position;
