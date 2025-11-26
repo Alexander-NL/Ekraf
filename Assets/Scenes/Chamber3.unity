@@ -34378,7 +34378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 681e1dbb3fa36b14596acd4cd89ebb7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroRespawn
-  DeadCounter: 10
+  DeadCounter: 0
   deadText: {fileID: 815602152}
   Dead: 0
   respawnTimer: 1

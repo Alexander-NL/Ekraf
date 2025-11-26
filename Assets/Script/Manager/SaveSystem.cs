@@ -10,6 +10,8 @@ public class SaveSystem : MonoBehaviour
     public class SaveData
     {
         public int deathTotal = 2000; // Start with maximum value
+        public float BGMVolume = 1f;
+        public float SFXVolume = 1f;
     }
 
     private string savePath;
@@ -90,6 +92,16 @@ public class SaveSystem : MonoBehaviour
     public int GetDeathTotal()
     {
         return currentSaveData.deathTotal;
+    }
+
+    public float GetBGMVolume()
+    {
+        return currentSaveData.BGMVolume;
+    }
+
+    public float GetSFXVolume()
+    {
+        return currentSaveData.SFXVolume;
     }
 
     public void NextScene(int temp)

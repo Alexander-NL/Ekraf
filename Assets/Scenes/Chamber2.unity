@@ -28945,7 +28945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 681e1dbb3fa36b14596acd4cd89ebb7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroRespawn
-  DeadCounter: 10
+  DeadCounter: 0
   deadText: {fileID: 815602152}
   Dead: 0
   respawnTimer: 1
@@ -43754,7 +43754,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: f3e73deba9f35154e9a082291540be2c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
