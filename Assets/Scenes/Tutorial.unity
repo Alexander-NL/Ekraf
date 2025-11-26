@@ -4532,7 +4532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 681e1dbb3fa36b14596acd4cd89ebb7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroRespawn
-  DeadCounter: 10
+  DeadCounter: 0
   deadText: {fileID: 479534931}
   Dead: 0
   respawnTimer: 1
@@ -4822,7 +4822,7 @@ Transform:
   m_GameObject: {fileID: 575533589}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.66, y: -3.79, z: 0}
+  m_LocalPosition: {x: -23.800003, y: -3.79, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.6666667}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -5183,7 +5183,7 @@ Transform:
   m_GameObject: {fileID: 621032924}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.66, y: -3.79, z: -10}
+  m_LocalPosition: {x: -23.800003, y: -3.79, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5877,7 +5877,7 @@ Transform:
   m_GameObject: {fileID: 819894013}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.66, y: -3.79, z: 0}
+  m_LocalPosition: {x: -23.8, y: -3.79, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10802,7 +10802,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: f3e73deba9f35154e9a082291540be2c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11035,7 +11035,7 @@ Transform:
   m_GameObject: {fileID: 969945756}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.659996, y: -2.587289, z: -10}
+  m_LocalPosition: {x: -23.799995, y: -2.587289, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -31389,6 +31389,7 @@ MonoBehaviour:
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 1
+  _isTutorial: 1
   mouseWorldPosition: {x: 0, y: 0}
 --- !u!4 &1630088830
 Transform:

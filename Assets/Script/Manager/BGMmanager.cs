@@ -76,6 +76,12 @@ public class BGMmanager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        BgmVolume = SaveSystem.Instance.GetBGMVolume();
+        SfxVolume = SaveSystem.Instance.GetSFXVolume();
+    }
+
     void Update()
     {
         BgmAudio.volume = BgmVolume;

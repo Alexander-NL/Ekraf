@@ -28,6 +28,7 @@ public class HeroRespawn : MonoBehaviour
 
     public void Start()
     {
+        DeadCounter = SaveSystem.Instance.Death;
         deadText.text = DeadCounter.ToString();
         earlyMovementState = heroMovement.CurrentState;
     }

@@ -53,7 +53,6 @@ public class SmallTurret : MonoBehaviour
 
     public void ReceiveHit(int dmg)
     {
-        Debug.Log("Got Hit");
         bossTurret.ReceiveHit(dmg);
     }
 
