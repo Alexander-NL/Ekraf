@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -114,5 +115,10 @@ public class SaveSystem : MonoBehaviour
         currentSaveData.deathTotal = int.MaxValue;
         SaveDeathTotal();
         Debug.Log("Death total reset");
+    }
+
+    internal static object Instantiate()
+    {
+        throw new NotImplementedException();
     }
 }

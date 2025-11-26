@@ -14,7 +14,7 @@ public class HeroRespawn : MonoBehaviour
     public CapsuleCollider2D box2D;
 
     [Header("Ui related")]
-    public Animator Skull;
+    //public Animator Skull;
     public Animator Box;
 
     [Header("Object & Script Reference")]
@@ -69,7 +69,7 @@ public class HeroRespawn : MonoBehaviour
         Dead = true;
         box2D.enabled = false;
 
-        Skull.SetTrigger("Dead");
+        //Skull.SetTrigger("Dead");
         Box.SetTrigger("Dead");
 
         playerAnim.randomizeDead();
