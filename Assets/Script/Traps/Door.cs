@@ -94,7 +94,6 @@ public class Door : MonoBehaviour
     {
         spriteRenderer.sprite = impactSprite;
         isSlammingDown = false;
-        Debug.Log("Hit ground! Returning up slowly...");
 
         impulseSource.GenerateImpulse();
 

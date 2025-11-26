@@ -29,6 +29,7 @@ public class PlayerAttackHero : MonoBehaviour
     public PlayerMiscScript playerMiscScript;
     public CinemachineImpulseSource impulseSource;
     [SerializeField] private LayerMask targetLayerMask;
+    [SerializeField] bool _isTutorial;
 
     public Vector2 mouseWorldPosition;
 
@@ -56,9 +57,17 @@ public class PlayerAttackHero : MonoBehaviour
     private void Start()
     {
         Cursor.visible = false;
+        if (!_isTutorial)
+        {
+            TurnOnPlayerHelp();
+        }
+        Weapon.SetActive(false);
+    }
+
+    public void TurnOnPlayerHelp()
+    {
         canSlap = true;
         canParry = true;
-        Weapon.SetActive(false);
     }
 
     public void Update()
@@ -73,7 +82,6 @@ public class PlayerAttackHero : MonoBehaviour
     private void ParryGetMouseLocation(InputAction.CallbackContext context)
     {
         if (playerMiscScript.paused) return;
-        Debug.Log("Clicking");
 
         RaycastHit2D[] hits = Physics2D.CircleCastAll(mouseWorldPosition, 0.5f, Vector2.zero, targetLayerMask);
 
@@ -107,7 +115,6 @@ public class PlayerAttackHero : MonoBehaviour
     private void SlapGetMouseLocation(InputAction.CallbackContext context)
     {
         if (playerMiscScript.paused) return;
-        Debug.Log("Clicking");
 
         RaycastHit2D[] hits = Physics2D.CircleCastAll(mouseWorldPosition, 0.5f, Vector2.zero, targetLayerMask);
 
