@@ -107,7 +107,6 @@ public class PlayerAttackHero : MonoBehaviour
     private void SlapGetMouseLocation(InputAction.CallbackContext context)
     {
         if (playerMiscScript.paused) return;
-        Debug.Log("Clicking");
 
         RaycastHit2D[] hits = Physics2D.CircleCastAll(mouseWorldPosition, 0.5f, Vector2.zero, targetLayerMask);
 
