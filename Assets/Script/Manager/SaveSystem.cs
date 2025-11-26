@@ -114,7 +114,7 @@ public class SaveSystem : MonoBehaviour
 
     public void NextScene(int temp)
     {
-        Death = Death + temp;
+        Death = temp;
     }
 
     public void ResetDeathTotal()
