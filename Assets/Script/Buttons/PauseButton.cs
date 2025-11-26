@@ -9,7 +9,7 @@ public class PauseButton : MonoBehaviour
     void Start()
     {
         pauseCanvas.SetActive(false);
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
     }
 
     public void pauseButtonClick()
