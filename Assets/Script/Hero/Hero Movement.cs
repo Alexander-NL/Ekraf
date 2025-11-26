@@ -208,7 +208,15 @@ public class HeroMovement : MonoBehaviour
     {
         heroAnim.JumpTrigger();
         BGMmanager.Instance.PlayerSfxSet("Jump");
-        rb.linearVelocity = new Vector2(-rb.linearVelocity.x * 1.5f, jumpForce);
+
+        if (CurrentState == MovementState.MovingLeft)
+        {
+            rb.linearVelocity = new Vector2(-3 * 1.5f, jumpForce);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(3 * 1.5f, jumpForce);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -230,6 +238,7 @@ public class HeroMovement : MonoBehaviour
             isGrounded = true;
             canJump = false;
             heroAnim.IdleTrigger();
+            detect.MidAirSlap = false;
             StartCoroutine(ChangeDirection());
             return;
         }
@@ -254,7 +263,14 @@ public class HeroMovement : MonoBehaviour
     {
         stunned = true;
         heroAnim.IdleTrigger();
+        MovementState temp = CurrentState;
+        CurrentState = MovementState.Idle;
+        rb.linearVelocity = new Vector2 (0, 0);
+
         yield return new WaitForSeconds(1);
+
+        CurrentState = temp;
+
         heroAnim.WalkTrigger();
         stunned = false;
     }

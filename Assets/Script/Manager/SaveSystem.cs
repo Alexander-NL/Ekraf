@@ -11,8 +11,8 @@ public class SaveSystem : MonoBehaviour
     public class SaveData
     {
         public int deathTotal = 2000; // Start with maximum value
-        public float BGMVolume = 1f;
-        public float SFXVolume = 1f;
+        public float BGMVolume = 0.5f;
+        public float SFXVolume = 0.5f;
     }
 
     private string savePath;
@@ -98,6 +98,13 @@ public class SaveSystem : MonoBehaviour
     public float GetBGMVolume()
     {
         return currentSaveData.BGMVolume;
+    }
+
+    public void SaveVolumes(float s, float b)
+    {
+        currentSaveData.SFXVolume = s;
+        currentSaveData.BGMVolume = b;
+        SaveDeathTotal();
     }
 
     public float GetSFXVolume()
