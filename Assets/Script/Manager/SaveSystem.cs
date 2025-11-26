@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -42,7 +43,7 @@ public class SaveSystem : MonoBehaviour
         if (currentScore < currentSaveData.deathTotal)
         {
             currentSaveData.deathTotal = currentScore;
-            SaveDataToJson();
+            SaveDeathTotal();
             Debug.Log($"New lowest death total saved: {currentScore}");
         }
         else
@@ -51,7 +52,7 @@ public class SaveSystem : MonoBehaviour
         }
     }
 
-    private void SaveDataToJson()
+    private void SaveDeathTotal()
     {
         try
         {
@@ -104,13 +105,6 @@ public class SaveSystem : MonoBehaviour
         return currentSaveData.SFXVolume;
     }
 
-    public void SaveVolumes(float s, float b)
-    {
-        currentSaveData.SFXVolume = s;
-        currentSaveData.BGMVolume = b;
-        SaveDataToJson();
-    }
-
     public void NextScene(int temp)
     {
         Death = Death + temp;
@@ -119,7 +113,12 @@ public class SaveSystem : MonoBehaviour
     public void ResetDeathTotal()
     {
         currentSaveData.deathTotal = int.MaxValue;
-        SaveDataToJson();
+        SaveDeathTotal();
         Debug.Log("Death total reset");
+    }
+
+    internal static object Instantiate()
+    {
+        throw new NotImplementedException();
     }
 }
