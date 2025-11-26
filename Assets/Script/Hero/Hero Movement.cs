@@ -159,11 +159,7 @@ public class HeroMovement : MonoBehaviour
         {
             Debug.Log("Top Right null");
         }
-        if ((topHitLeft.collider != null &&
-            (topHitLeft.collider.gameObject.tag == "Ground" || topHitLeft.collider.gameObject.tag == "Wall" || topHitLeft.collider.gameObject.tag == "Spike"))
-            ||
-            (topHitRight.collider != null &&
-            (topHitRight.collider.gameObject.tag == "Ground" || topHitLeft.collider.gameObject.tag == "Wall" || topHitLeft.collider.gameObject.tag == "Spike")))
+        if (topHitLeft.collider != null || topHitRight.collider != null)
         {
             hitCeiling = true;
         }
@@ -173,13 +169,13 @@ public class HeroMovement : MonoBehaviour
         }
 
 
-        if (!hitCeiling && aboveHit.collider != null && aboveHit.collider.gameObject.tag == "Ground")
+        if (!hitCeiling && aboveHit.collider != null && (aboveHit.collider.gameObject.tag == "Ground" || aboveHit.collider.gameObject.tag == "Platform"))
         {
             canJump = true;
             Jump();
         }
 
-        if(!hitCeiling && capsuleHit.collider != null && (capsuleHit.collider.gameObject.tag == "Ground" || capsuleHit.collider.gameObject.tag == "Spike"))
+        if(!hitCeiling && capsuleHit.collider != null && (capsuleHit.collider.gameObject.tag == "Spike" || capsuleHit.collider.gameObject.tag == "Ground"))
         {
             canJump = true;
             Jump();
@@ -237,7 +233,7 @@ public class HeroMovement : MonoBehaviour
             StartCoroutine(ChangeDirection());
         }
 
-        if (collision.gameObject.tag == "Ground" && huggingWall)
+        if ((collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Platform") && huggingWall)
         {
             isGrounded = true;
             canJump = false;
@@ -246,7 +242,7 @@ public class HeroMovement : MonoBehaviour
             return;
         }
 
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Platform")
         {
             BGMmanager.Instance.PlayerSfxSet("Walk");
             heroAnim.WalkTrigger();
@@ -289,7 +285,7 @@ public class HeroMovement : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Platform")
         {
             isGrounded = false;
         }

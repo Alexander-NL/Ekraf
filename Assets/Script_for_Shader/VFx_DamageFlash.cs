@@ -11,7 +11,7 @@ public class VFx_DamageFlash : MonoBehaviour
     private SpriteRenderer[] _spriteRenderers;
     private Material[] _materials;
 
-    private Coroutine _damageFlashCoroutine;
+    [SerializeField] Coroutine _damageFlashCoroutine;
 
     private void Awake()
     {

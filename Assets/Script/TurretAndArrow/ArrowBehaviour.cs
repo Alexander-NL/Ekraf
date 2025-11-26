@@ -12,6 +12,8 @@ public class ArrowBehaviour : MonoBehaviour
     private bool isReturning = false;
     private float lifeTimer;
 
+    public TurretBehaviour turretBehaviour;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -35,6 +37,11 @@ public class ArrowBehaviour : MonoBehaviour
         lifeTimer += Time.deltaTime;
         if (lifeTimer >= maxLifeTime) Destroy(gameObject);
 
+        if(turretBehaviour != null)
+        {
+            if (turretBehaviour.isDead) Destroy(gameObject);
+        }
+
         if (isReturning && turret != null)
         {
             Vector2 dir = ((Vector2)turret.position - (Vector2)transform.position).normalized;
@@ -47,6 +54,11 @@ public class ArrowBehaviour : MonoBehaviour
             float angle = Mathf.Atan2(rb.linearVelocity.y, rb.linearVelocity.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
+
+        if(this.transform == turret)
+        {
+            Debug.Log("Reached Turret");
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -57,7 +69,9 @@ public class ArrowBehaviour : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-            else if (collision.collider.CompareTag("Wall") || collision.collider.CompareTag("Ground"))
+            else if (collision.collider.CompareTag("Wall") || collision.collider.CompareTag("Ground") 
+                || collision.collider.CompareTag("Spike") || collision.collider.CompareTag("Platform")
+                || collision.collider.CompareTag("Roof"))
             {
                 BGMmanager.Instance.ArrowHitWall();
                 Destroy(gameObject);
