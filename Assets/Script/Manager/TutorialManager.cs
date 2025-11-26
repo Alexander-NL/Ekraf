@@ -22,6 +22,7 @@ public class TutorialManager : MonoBehaviour
     private HeroRespawn heroRespawn;
     private bool triggered = false;
     private Vector2 targetPosition;
+    private bool isDeathCalled = false;
 
     private void Start()
     {
@@ -55,21 +56,22 @@ public class TutorialManager : MonoBehaviour
             ShowTutorial(parryInstruction);
         }
 
-        if (triggered && (hero.position.x - point1.position.x) == -35f)
+        if (triggered && (hero.position.x - point1.position.x) > -40f && (hero.position.x - point1.position.x) < -30f)
         {
             HideTutorial();
         }
 
-        if (triggered && (hero.position.x - point1.position.x) == 50f)
+        if (triggered && (hero.position.x - point1.position.x) > 45f && (hero.position.x - point1.position.x) < 50f)
         {
             HideTutorial();
         }
 
-        if(heroRespawn.DeadCounter == 1 && !triggered)
+        if(heroRespawn.DeadCounter == 1 && !triggered && !isDeathCalled)
         {
             Debug.Log("Death: " + SaveSystem.Instance.GetDeathTotal());
             playerAttack.TurnOnPlayerHelp();
             ShowTutorial(slapInstruction);
+            isDeathCalled = true;
 
         }
     }

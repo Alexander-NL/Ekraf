@@ -11,10 +11,11 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] CanvasGroup[] CutsceneList;
     [SerializeField] CanvasGroup fadeImage;
     [SerializeField] bool isComic;
+    [SerializeField] GameObject pauseButton;
     public int temp = 0;
     public float fadeDuration = 1f;
     public GameObject mouse;
-
+  
     [Header("Input Action Reference")]
     public InputActionReference NextAction;
 
@@ -32,12 +33,14 @@ public class CutsceneManager : MonoBehaviour
 
     private void Start()
     {
+        //pauseButton.SetActive(false);
+        //Time.timeScale = 0f;
     }
 
     public void StartCutscene()
     {
         Time.timeScale = 0f;
-        foreach(var cutscene in CutsceneList)
+        foreach (var cutscene in CutsceneList)
         {
             cutscene.alpha = 0f;
         }
@@ -81,6 +84,7 @@ public class CutsceneManager : MonoBehaviour
             {
                 StartCoroutine(FadeOutTransition(fadeImage));
                 Time.timeScale = 1f;
+                //pauseButton.SetActive(true);
                 this.gameObject.SetActive(false);
                 BGMmanager.Instance.ChangeToGameplayBgm();
             }
