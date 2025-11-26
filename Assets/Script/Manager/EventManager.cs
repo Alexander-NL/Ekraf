@@ -18,18 +18,10 @@ public class EventManager : MonoBehaviour
     public void Start()
     {
         InitializeBossDone();
-        InitializeNextLevel();
     }
 
-    private void InitializeNextLevel()
+    public void InitializeBossDone()
     {
-        
-    }
-
-    private void InitializeBossDone()
-    {
-        SaveSystem.Instance.NextScene(heroRespawn.DeadCounter);
-
         Scene currentScene = SceneManager.GetActiveScene();
         if (currentScene.name == "BossRoom")
         {

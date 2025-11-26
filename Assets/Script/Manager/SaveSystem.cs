@@ -17,7 +17,7 @@ public class SaveSystem : MonoBehaviour
 
     private string savePath;
     private SaveData currentSaveData;
-    public int Death = 0;
+    public int Death;
 
     void Awake()
     {
@@ -114,7 +114,10 @@ public class SaveSystem : MonoBehaviour
 
     public void NextScene(int temp)
     {
+        Debug.Log(temp);
         Death = temp;
+
+        Debug.Log(Death);
     }
 
     public void ResetDeathTotal()

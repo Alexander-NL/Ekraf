@@ -276,6 +276,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6020460}
     - target: {fileID: 6317748391608755924, guid: 389fb85b6e5c8644e81b2d97cf7b9df1, type: 3}
+      propertyPath: pauseButton
+      value: 
+      objectReference: {fileID: 1604661562}
+    - target: {fileID: 6317748391608755924, guid: 389fb85b6e5c8644e81b2d97cf7b9df1, type: 3}
       propertyPath: CutsceneList.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -2676,7 +2680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e2ba80bd947d44390dbfbed8d13696, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveSystem
-  Death: 20
+  Death: 0
 --- !u!4 &342494905
 Transform:
   m_ObjectHideFlags: 0

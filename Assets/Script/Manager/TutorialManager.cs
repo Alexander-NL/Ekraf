@@ -68,7 +68,7 @@ public class TutorialManager : MonoBehaviour
 
         if(heroRespawn.DeadCounter == 1 && !triggered && !isDeathCalled)
         {
-            Debug.Log("Death: " + SaveSystem.Instance.GetDeathTotal());
+            Debug.Log("Death: " + heroRespawn.DeadCounter);
             playerAttack.TurnOnPlayerHelp();
             ShowTutorial(slapInstruction);
             isDeathCalled = true;
