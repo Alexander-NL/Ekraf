@@ -42,7 +42,7 @@ public class TutorialManager : MonoBehaviour
     private void Update()
     {
         hero = heroObj.transform;
-        Debug.Log("Hero X Position: " + (hero.position.x - point1.position.x));
+        //Debug.Log("Hero X Position: " + (hero.position.x - point1.position.x));
 
         tutorialBox.anchoredPosition = Vector2.Lerp(
             tutorialBox.anchoredPosition,
