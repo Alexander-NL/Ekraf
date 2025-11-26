@@ -26,6 +26,8 @@ public class OptionsButton : MonoBehaviour
     {
         PMS.isOption = false;
         BGMmanager.Instance.SfxOnclick();
+        SaveSystem.Instance.SaveVolumes(BGMmanager.Instance.SfxVolume, BGMmanager.Instance.BgmVolume);
+
         PauseCanvas.SetActive(true);
         OptionCanvas.SetActive(false);
     }
